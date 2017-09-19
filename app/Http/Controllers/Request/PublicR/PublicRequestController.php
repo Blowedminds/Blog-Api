@@ -73,7 +73,7 @@ class PublicRequestController extends Controller
 
   public function getAboutMe($locale)
   {
-    return response()->json('Locale: '.$locale, 200);
+    return response()->json(['Locale: '.$locale], 200);
   }
 
   public function getImage($image)

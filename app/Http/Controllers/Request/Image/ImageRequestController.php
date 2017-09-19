@@ -22,7 +22,7 @@ class ImageRequestController extends Controller
   }
 
   public function postImage(Request $request)
-  { 
+  {
     $this->validate($request, [
       'file' => 'required|image|max:33554432',
       'public' => 'required',
@@ -144,7 +144,7 @@ class ImageRequestController extends Controller
   {
     $not_found_response = ['header' => 'Hata', 'message' => 'Fotoğrafı bulamadık', 'state' => 'error'];
 
-    if(!$image = ImageApi::isPublic($image))
+    if(!$image = ImageApi::isAccessible($image))
       return API::responseApi($not_found_response);
 
     return ImageApi::file(storage_path('/app/albums/'.$image->u_id.'/thumb_'.$image->u_id.".".$image->type),
@@ -156,7 +156,7 @@ class ImageRequestController extends Controller
   {
     $not_found_response = ['header' => 'Hata', 'message' => 'Fotoğrafı bulamadık', 'state' => 'error'];
 
-    if(!$image = ImageApi::isPublic($image))
+    if(!$image = ImageApi::isAccessible($image))
       return API::responseApi($not_found_response);
 
     return ImageApi::file(storage_path('/app/albums/'.$image->u_id.'/'.$image->u_id.".".$image->type),

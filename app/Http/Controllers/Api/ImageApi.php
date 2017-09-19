@@ -14,7 +14,7 @@ class ImageApi
     return new BinaryFileResponse($file, 200, $headers);
   }
 
-  public static function isPublic($image_id)
+  public static function isAccessible($image_id)
   {
     if(!$query = Image::where('u_id', $image_id)->first())  return false;
 
