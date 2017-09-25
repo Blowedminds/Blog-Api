@@ -64,9 +64,9 @@ class PublicRequestController extends Controller
 
     $locale = Language::where('slug', $locale)->first();
 
-    $data['most_viewed'] = PublicApi::getMostViewed($locale->id);
+    //$data['most_viewed'] = PublicApi::getMostViewed($locale->id);
 
-    $data['latest'] = PublicApi::getLatest($locale->id);
+    //$data['latest'] = PublicApi::getLatest($locale->id);
 
     return response()->json($data, 200);
   }

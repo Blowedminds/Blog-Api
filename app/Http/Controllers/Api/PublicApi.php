@@ -16,7 +16,7 @@ class PublicApi
 
     foreach ($most_viewed as $key => $article) {
 
-      if($i >= 3) break;
+      if($i >= 5) break;
 
       if(!isset($article->contents[0])) continue;
 
