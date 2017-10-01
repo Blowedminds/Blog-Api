@@ -91,4 +91,22 @@ class PublicRequestController extends Controller
     return response()->file(storage_path('/app/albums/'.$query->u_id.'/'.$query->u_id.".$query->type"), ['Content-Type' => 'image/'.$query->type]);
   }
 
+  public function getCategories()
+  {
+    $category = API::categories();
+
+    $k = 0; $categories = [];
+
+    foreach ($category as $key => $value) {
+
+      $categories[$k]['id'] = $value->id;
+      $categories[$k]['name'] = $value->name;
+      $categories[$k]['description'] = $value->description;
+
+      $k++;
+    }
+
+    return response()->json($categories, 200);
+  }
+
 }

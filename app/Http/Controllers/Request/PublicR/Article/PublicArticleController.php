@@ -21,6 +21,7 @@ class PublicArticleController extends Controller
         'header' => 'Hata',
         'message' => 'Aradığınız Makaleyi Bulamadık',
         'state' => 'error',
+        'link' => 'home',
         'pop_up' => true
       ];
 
@@ -96,4 +97,5 @@ class PublicArticleController extends Controller
       return response()->json(PublicApi::getLatest($language->id), 200);
     }
 
+    
 }

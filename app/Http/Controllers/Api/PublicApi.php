@@ -23,7 +23,7 @@ class PublicApi
       //$data[$i]['content']['body'] = $article->contents[0]->body;
       $data[$i]['content']['image_url'] = $article->contents[0]->image_url;
       $data[$i]['content']['keywords'] = $article->contents[0]->keywords;
-      //$data[$i]['content']['sub_title'] = $article->contents[0]->sub_title;
+      $data[$i]['content']['sub_title'] = $article->contents[0]->sub_title;
       $data[$i]['content']['title'] = $article->contents[0]->title;
 
       $data[$i]['categories'] = $article->categories;
@@ -56,7 +56,7 @@ class PublicApi
       //$data[$i]['content']['body'] = $article->contents[0]->body;
       $data[$i]['content']['image_url'] = $article->contents[0]->image_url;
       $data[$i]['content']['keywords'] = $article->contents[0]->keywords;
-      //$data[$i]['content']['sub_title'] = $article->contents[0]->sub_title;
+      $data[$i]['content']['sub_title'] = $article->contents[0]->sub_title;
       $data[$i]['content']['title'] = $article->contents[0]->title;
 
       $data[$i]['categories'] = $article->categories;

@@ -10,6 +10,8 @@ $app->group(['prefix' => '{locale}'], function() use ($app) {
 
   $app->get('about-me', 'PublicRequestController@getAboutMe');
 
+  $app->get('categories', 'PublicRequestController@getCategories');
+
   $app->group(['prefix' => 'article'], function () use($app) {
 
     $app->get('article-single/{article_slug}', 'Article\PublicArticleController@getArticleSingle');
