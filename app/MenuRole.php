@@ -15,5 +15,14 @@ class MenuRole extends Model
      *
      * @var array
      */
+
+     protected $fillable = [
+       'menu_id', 'role_id'
+     ];
+
+     protected $hidden = [
+
+     ];
+
     protected $dates = ['deleted_at'];
 }

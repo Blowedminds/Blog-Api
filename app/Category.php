@@ -14,5 +14,14 @@ class Category extends Model
      *
      * @var array
      */
+
+    protected $fillable = [
+      'name', 'description'
+    ];
+
+    protected $hidden = [
+
+    ];
+
     protected $dates = ['deleted_at'];
 }

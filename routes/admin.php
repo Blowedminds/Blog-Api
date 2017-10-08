@@ -46,3 +46,30 @@ $app->group(['prefix' => 'article'], function() use($app) {
 
   $app->put('permission/{article_id}', 'Article\ArticleRequestController@putPermission');
 });
+
+$app->group(['prefix' => 'panel'], function() use($app){
+
+  $app->get('menus', 'AdminPanel\AdminPanelRequestController@getMenus');
+
+  $app->post('menus', 'AdminPanel\AdminPanelRequestController@postMenu');
+
+  $app->put('menus', 'AdminPanel\AdminPanelRequestController@putMenu');
+
+  $app->delete('menus/{id}', 'AdminPanel\AdminPanelRequestController@deleteMenu');
+
+  $app->get('categories', 'AdminPanel\AdminPanelRequestController@getCategories');
+
+  $app->post('categories', 'AdminPanel\AdminPanelRequestController@postCategory');
+
+  $app->put('categories', 'AdminPanel\AdminPanelRequestController@putCategory');
+
+  $app->delete('categories/{id}', 'AdminPanel\AdminPanelRequestController@deleteCategory');
+
+  $app->get('languages', 'AdminPanel\AdminPanelRequestController@getLanguages');
+
+  $app->post('languages', 'AdminPanel\AdminPanelRequestController@postLanguage');
+
+  $app->put('languages', 'AdminPanel\AdminPanelRequestController@putLanguage');
+
+  $app->delete('languages/{id}', 'AdminPanel\AdminPanelRequestController@deleteLanguage');
+});

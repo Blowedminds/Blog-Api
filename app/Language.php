@@ -15,4 +15,14 @@ class Language extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    protected $fillable = [
+      'slug', 'name'
+    ];
+
+    protected $hidden = [
+
+    ];
+
+
 }

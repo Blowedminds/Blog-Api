@@ -15,4 +15,18 @@ class Menu extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    protected $fillable = [
+      'menu_name', 'menu_url', 'menu_tooltip', 'menu_weight', 'menu_parent'
+    ];
+
+    protected $hidden = [
+
+    ];
+
+
+    public function menuRoles()
+    {
+      return $this->hasMany('App\MenuRole');
+    }
 }
