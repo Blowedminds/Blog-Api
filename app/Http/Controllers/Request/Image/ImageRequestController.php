@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Http\Controllers\Api\MainApi as API;
-
+use App\Http\Controllers\Api\AuthApi;
 use App\Http\Controllers\Api\ImageApi;
 
 use Illuminate\Support\Facades\Storage;
@@ -29,14 +29,14 @@ class ImageRequestController extends Controller
       'alt' => 'required'
     ]);
 
-    $user = API::authUser();
-
-    $file = $request->file('file');
+    $user = AuthApi::authUser();
 
     if (!$request->hasFile('file') && !$file->isValid())
       return API::responseApi([
         'header' => 'Dosya Hatası', 'message' => 'Dosyayı alamadık', 'state' => 'error'
       ]);
+
+    $file = $request->file('file');
 
     $extension = $file->extension();
 
@@ -101,7 +101,7 @@ class ImageRequestController extends Controller
 
   public function getImages()
   {
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     $public = Image::where('public', 1)->get();
 
@@ -166,7 +166,7 @@ class ImageRequestController extends Controller
 
   public function getEdit($image)
   {
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     if(!$image = self::canEditImage($image, $user->user_id))
         return API::responseApi([
@@ -187,7 +187,7 @@ class ImageRequestController extends Controller
 
   public function putEdit($image, Request $request)
   {
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     $this->validate($request, [
       'u_id' => 'required',
@@ -293,7 +293,7 @@ class ImageRequestController extends Controller
 
   public function deleteImage($image)
   {
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     $not_found_access_denied = ['header' => 'Hata', 'message' => 'Aradığınız albüm ya yok yada erişemiyorsunuz', 'state' => 'error'];
 

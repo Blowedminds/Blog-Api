@@ -11,13 +11,19 @@ $app->group(['prefix' => 'auth'], function() use($app){
   $app->get('check', 'Auth\AuthRequestController@checkAuth');
 });
 
-$app->get('dashboard', function(){return response()->json(null, 200);});
-
-$app->get('menus', 'AdminRequestController@getMenus');
-
 $app->group(['prefix' => 'user'], function() use($app) {
 
   $app->get('info', 'User\UserRequestController@getUserInfo');
+
+  $app->get('profile', 'User\UserRequestController@getUserProfile');
+
+  $app->post('profile', 'User\UserRequestController@postUserProfile');
+
+  $app->post('profile-image', 'User\UserRequestController@postUserProfileImage');
+
+  $app->get('menus', 'User\UserRequestController@getMenus');
+
+  $app->get('dashboard', function(){return response()->json(null, 200);});
 });
 
 $app->group(['prefix' => 'article'], function() use($app) {

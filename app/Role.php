@@ -15,6 +15,9 @@ class Role extends Model
      *
      * @var array
      */
+
+    protected $casts = [ 'id' => 'integer' ];
+
     protected $dates = ['deleted_at'];
 
     public function menus()
@@ -24,6 +27,6 @@ class Role extends Model
 
     public function users()
     {
-      return $this->belongsToMany('App\User', 'user_roles', 'role_id', 'user_id');
+      return $this->belongsToMany('App\User', 'user_datas', 'role_id', 'user_id');
     }
 }

@@ -23,39 +23,39 @@ class AdminPanelRequestController extends Controller
 
   public function getMenus()
   {
-      $menus = Menu::with(['menuRoles'])->get();
-      //return response()->json($menus, 200);
+    $menus = Menu::with(['menuRoles'])->get();
+    //return response()->json($menus, 200);
 
-      $data = []; $i = 0;
+    $data = []; $i = 0;
 
-      foreach ($menus as $key => $menu) {
-        $data['menus'][$i]['id'] = $menu->id;
-        $data['menus'][$i]['menu_name'] = $menu->menu_name;
-        $data['menus'][$i]['menu_parent'] = $menu->menu_parent;
-        $data['menus'][$i]['menu_tooltip'] = $menu->menu_tooltip;
-        $data['menus'][$i]['menu_url'] = $menu->menu_url;
-        $data['menus'][$i]['menu_weight'] = $menu->menu_weight;
-        $j = 0;
+    foreach ($menus as $key => $menu) {
+      $data['menus'][$i]['id'] = $menu->id;
+      $data['menus'][$i]['menu_name'] = $menu->menu_name;
+      $data['menus'][$i]['menu_parent'] = $menu->menu_parent;
+      $data['menus'][$i]['menu_tooltip'] = $menu->menu_tooltip;
+      $data['menus'][$i]['menu_url'] = $menu->menu_url;
+      $data['menus'][$i]['menu_weight'] = $menu->menu_weight;
+      $j = 0;
 
-          foreach ($menu->menuRoles as $key => $role) {
-            $data['menus'][$i]['menu_roles'][$j] = $role->role_id;
-            $j++;
-          }
+        foreach ($menu->menuRoles as $key => $role) {
+          $data['menus'][$i]['menu_roles'][$j] = $role->role_id;
+          $j++;
+        }
 
-        $i++;
-      }
+      $i++;
+    }
 
-      $roles = Role::all();
+    $roles = Role::all();
 
-      $i = 0;
+    $i = 0;
 
-      foreach ($roles as $key => $role) {
-        $data['roles'][$i]['id'] = $role->id;
-        $data['roles'][$i]['role_name'] = $role->role_name;
-        $i++;
-      }
+    foreach ($roles as $key => $role) {
+      $data['roles'][$i]['id'] = $role->id;
+      $data['roles'][$i]['role_name'] = $role->role_name;
+      $i++;
+    }
 
-      return response()->json($data, 200);
+    return response()->json($data, 200);
   }
 
   public function getCategories()
@@ -183,7 +183,7 @@ class AdminPanelRequestController extends Controller
       'id' => 'required',
       'menu_name' => 'required',
       'menu_url' => 'required',
-      'menu_roles' => 'required',
+      //'menu_roles' => 'required',
       'menu_tooltip' => 'required',
       'menu_weight' => 'required',
       'menu_parent' => 'required'
@@ -193,12 +193,13 @@ class AdminPanelRequestController extends Controller
 
     MenuRole::where('menu_id', $request->input('id'))->forceDelete();
 
-    foreach ($request->input('menu_roles') as $key => $value) {
-      MenuRole::create([
-        'menu_id' => $request->input('id'),
-        'role_id' => $value['id']
-      ]);
-    }
+    if($request->has('menu_roles'))
+      foreach ($request->input('menu_roles') as $key => $value) {
+        MenuRole::create([
+          'menu_id' => $request->input('id'),
+          'role_id' => $value['id']
+        ]);
+      }
 
     $category->menu_name = $request->input('menu_name');
 
@@ -220,7 +221,7 @@ class AdminPanelRequestController extends Controller
     $this->validate($request, [
       'menu_name' => 'required',
       'menu_url' => 'required',
-      'menu_roles' => 'required',
+      //'menu_roles' => 'required',
       'menu_tooltip' => 'required',
       'menu_weight' => 'required',
       'menu_parent' => 'required'
@@ -234,12 +235,13 @@ class AdminPanelRequestController extends Controller
       'menu_parent' => $request->input('menu_parent'),
     ]);
 
-    foreach ($request->input('menu_roles') as $key => $value) {
-      MenuRole::create([
-        'menu_id' => $menu->id,
-        'role_id' => $value['id']
-      ]);
-    }
+    if($request->has('menu_roles'))
+      foreach ($request->input('menu_roles') as $key => $value) {
+        MenuRole::create([
+          'menu_id' => $menu->id,
+          'role_id' => $value['id']
+        ]);
+      }
 
     return response()->json(['TEBRIKLER'], 200);
   }

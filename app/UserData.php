@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserRole extends Model
+class UserData extends Model
 {
   use SoftDeletes;
 
@@ -15,8 +15,10 @@ class UserRole extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
-    
+
+    protected $casts = [ 'id' => 'integer', 'role_id' => 'integer' ];
+
     protected $fillable = [
-      'user_id', 'role_id'
+      'user_id', 'name', 'role_id', 'profile_image', 'biography'
     ];
 }

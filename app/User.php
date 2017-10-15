@@ -48,6 +48,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
          return [];
      }
 
+     protected $casts = [ 'id' => 'integer' ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -71,9 +73,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
       return $this->belongsToMany('App');
     }
 
-    public function userRoles()
+    public function userData()
     {
-      return $this->hasMany('App\UserRole', 'user_id', 'user_id');
+      return $this->hasOne('App\UserData', 'user_id', 'user_id');
     }
 
     public function articles()
@@ -83,12 +85,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function roles()
     {
-      return $this->belongsToMany('App\Role', 'user_roles', 'user_id', 'role_id');
+      return $this->belongsToMany('App\Role', 'user_datas', 'user_id', 'role_id');
     }
 
     public function rolesByRoleId($role_id)
     {
-      return $this->belongsToMany('App\Role', 'user_roles', 'user_id', 'role_id')->wherePivot('role_id', $role_id);
+      return $this->belongsToMany('App\Role', 'user_datas', 'user_id', 'role_id')->wherePivot('role_id', $role_id);
     }
 
     public function menusByRole()

@@ -16,6 +16,8 @@ class Language extends Model
      */
     protected $dates = ['deleted_at'];
 
+    protected $casts = [ 'id' => 'integer' ];
+
     protected $fillable = [
       'slug', 'name'
     ];

@@ -16,6 +16,8 @@ class Article extends Model
      */
     protected $dates = ['deleted_at'];
 
+    protected $casts = [ 'id' => 'integer', 'views' => 'integer' ];
+
     protected $fillable = [
       'slug', 'author', 'image', 'views'
     ];

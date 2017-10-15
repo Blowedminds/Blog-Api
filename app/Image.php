@@ -11,6 +11,9 @@ class Image extends Model
    *
    * @var array
    */
+
+  protected $casts = [ 'id' => 'integer', 'size' => 'integer', 'width' => 'integer', 'height' => 'integer', 'public' => 'integer' ];
+
   protected $fillable = [
       'u_id', 'hash', 'name', 'size', 'width', 'height', 'type', 'alt', 'owner', 'public'
   ];

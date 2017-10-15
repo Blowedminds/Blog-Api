@@ -15,6 +15,8 @@ class Category extends Model
      * @var array
      */
 
+    protected $casts = [ 'id' => 'integer' ];
+
     protected $fillable = [
       'name', 'description'
     ];

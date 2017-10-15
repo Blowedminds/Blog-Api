@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Controllers\Api\MainApi;
 
+use App\Http\Controllers\Api\AuthApi;
+
 class AuthRequestController extends Controller
 {
   public function __construct()
@@ -69,9 +71,12 @@ class AuthRequestController extends Controller
 
     $user->save();
 
-    $userRole = \App\UserRole::create([
-        'user_id' => $user->user_id,
-        'role_id' => 2
+    $userRole = \App\UserData::create([
+      'user_id' => $user->user_id,
+      'name' => $name,
+      'role_id' => 2,
+      'profile_image' => 'DEFAULT_IMAGE',
+      'biography' => "{'tr':'Buraya kendinizi anlatan kısa bir metin yazın!''}"
     ]);
 
     $credentials = $request->only('email', 'password');
@@ -113,7 +118,7 @@ class AuthRequestController extends Controller
 
   private function _checkAuth()
   {
-    if (!MainApi::authUser()) return false;
+    if (!AuthApi::authUser()) return false;
 
     return true;
   }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Http\Controllers\Api\MainApi as API;
+use App\Http\Controllers\Api\AuthApi;
 
 use App\Article;
 use App\ArticleCategory;
@@ -14,7 +15,7 @@ use App\Category;
 use App\Language;
 use App\ArticleArchive;
 use App\ArticlePermission;
-use App\UserRole;
+use App\UserData;
 use App\User;
 use App\Role;
 
@@ -32,7 +33,7 @@ class ArticleRequestController extends Controller
 
   public function getArticles()
   {
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     if($roles = $user->rolesByRoleId("1")->first())
 
@@ -54,7 +55,7 @@ class ArticleRequestController extends Controller
 
   public function getTrash()
   {
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     $trashedArticle = API::trashedArticle($user);
 
@@ -99,7 +100,7 @@ class ArticleRequestController extends Controller
   {
     $messages = $this->messages;
 
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     if(!$article = Article::find($article_id))
       return API::responseApi([
@@ -144,7 +145,7 @@ class ArticleRequestController extends Controller
       'slug' => 'required'
     ], $messages);
 
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     $article = Article::create([
       'slug' => $request->input('slug'),
@@ -201,7 +202,7 @@ class ArticleRequestController extends Controller
       //'file' => 'file|required'
     ], $messages);
 
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     if(!self::hasPermission($request->input('id'), $user->user_id))
       return API::responseApi([
@@ -253,7 +254,7 @@ class ArticleRequestController extends Controller
       'language' => 'required',
     ], $messages);
 
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     if(!self::hasPermission($request->input('id'), $user->user_id))
       return API::responseApi([
@@ -311,7 +312,7 @@ class ArticleRequestController extends Controller
   {
     $messages = $this->messages;
 
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     $this->validate($request, [
       'id' => 'required',
@@ -359,7 +360,7 @@ class ArticleRequestController extends Controller
       'id' => 'required'
     ]);
 
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     if(!$article = Article::onlyTrashed()->find($request->input('id')))
       return API::responseApi([
@@ -391,7 +392,7 @@ class ArticleRequestController extends Controller
       'complete' => 'required'
     ]);
 
-    $user = API::authUser();
+    $user = AuthApi::authUser();
     $article_id = $request->input('id');
     $complete = $request->input('complete');
 
@@ -421,7 +422,7 @@ class ArticleRequestController extends Controller
 
   public function getPermission($article_id)
   {
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     $article = Article::find($article_id);
 
@@ -471,7 +472,7 @@ class ArticleRequestController extends Controller
     $have_permissionn = $request->input('have_permission');
     $not_have_permission = $request->input('not_have_permission');
 
-    $user = API::authUser();
+    $user = AuthApi::authUser();
 
     $article = Article::find($article_id);
 
@@ -483,7 +484,7 @@ class ArticleRequestController extends Controller
       ]);
 
     foreach ($have_permissionn as $key => $value) {
-      if ($temp = UserRole::where('user_id', $value['user_id'])->where('role_id', 1)->first()) continue;
+      if ($temp = UserData::where('user_id', $value['user_id'])->where('role_id', 1)->first()) continue;
 
       ArticlePermission::firstOrCreate(
           ['article_id' => $article_id, 'user_id' => $value['user_id']], ['article_id' => $article_id, 'user_id' => $value['user_id']]
@@ -493,7 +494,7 @@ class ArticleRequestController extends Controller
     foreach ($not_have_permission as $key => $value) {
       if($value['user_id'] == $user->user_id) continue;
 
-      if ($temp = UserRole::where('user_id', $value['user_id'])->where('role_id', 1)->first()) continue;
+      if ($temp = UserData::where('user_id', $value['user_id'])->where('role_id', 1)->first()) continue;
 
       if ($exist = ArticlePermission::where('article_id', $article_id)->where('user_id', $value['user_id'])->first())
         $exist->delete();
@@ -516,7 +517,7 @@ class ArticleRequestController extends Controller
       return true;
 
 
-    if ($role = UserRole::where('user_id', $user_id)->where('role_id', 1)->first())
+    if ($role = UserData::where('user_id', $user_id)->where('role_id', 1)->first())
       return true;
 
     return false;

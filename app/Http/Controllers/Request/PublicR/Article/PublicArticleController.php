@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\MainApi as API;
 use App\Http\Controllers\Api\PublicApi;
 
 use App\User;
+use App\UserData;
 use App\Article;
 use App\Category;
 use App\Language;
@@ -50,17 +51,22 @@ class PublicArticleController extends Controller
 
       $article_content = $article->contents[0];
 
+      $author = UserData::where('user_id', $article->author)->first();
+
       $data['title'] = $article_content->title;
       $data['sub_title'] = $article_content->sub_title;
       $data['body'] = $article_content->body;
       $data['keywords'] = $article_content->keywords;
       $data['categories'] = $temp_categories;
-      $data['author'] = User::find($article->author)->name;
       $data['available_languages'] = API::articleAvailableLanguages($article->id);
       $data['slug'] = $article->slug;
       $data['image'] = $article->image;
 
-      $article->views = intval($article->views) + 1;
+      $data['author']['name'] = $author->name;
+      $data['author']['profile_image'] = $author->profile_image;
+      $data['author']['bio'] = $author->biography;
+
+      $article->views = $article->views + 1;
 
       $article->save();
 
@@ -70,10 +76,7 @@ class PublicArticleController extends Controller
     public function getMostViewed($locale)
     {
       $response = [
-        'header' => 'Hata',
-        'message' => 'Aradığınız Makaleyi Bulamadık',
-        'state' => 'error',
-        'pop_up' => true
+        'header' => 'Hata', 'message' => 'Aradığınız Makaleyi Bulamadık', 'state' => 'error', 'pop_up' => true
       ];
 
       if(!$language = Language::where('slug', $locale)->first())
@@ -85,10 +88,7 @@ class PublicArticleController extends Controller
     public function getLatest($locale)
     {
       $response = [
-        'header' => 'Hata',
-        'message' => 'Aradığınız Makaleyi Bulamadık',
-        'state' => 'error',
-        'pop_up' => true
+        'header' => 'Hata', 'message' => 'Aradığınız Makaleyi Bulamadık', 'state' => 'error', 'pop_up' => true
       ];
 
       if(!$language = Language::where('slug', $locale)->first())
@@ -97,5 +97,14 @@ class PublicArticleController extends Controller
       return response()->json(PublicApi::getLatest($language->id), 200);
     }
 
-    
+    public function getArticleArchive($time)
+    {
+
+    }
+
+    public function getArticleSearchByKeywords()
+    {
+
+    }
+
 }

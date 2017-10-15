@@ -16,6 +16,8 @@ class ArticleCategory extends Model
      */
     protected $dates = ['deleted_at'];
 
+    protected $casts = [ 'id' => 'integer', 'article_id' => 'integer', 'category_id' => 'integer' ];
+
     protected $fillable = [
       'article_id', 'category_id'
     ];
