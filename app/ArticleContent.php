@@ -25,4 +25,9 @@ class ArticleContent extends Model
     protected $hidden = [
 
     ];
+
+    public function article()
+    {
+      return $this->belongsTo('App\Article');
+    }
 }

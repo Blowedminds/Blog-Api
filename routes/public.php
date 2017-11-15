@@ -19,6 +19,8 @@ $app->group(['prefix' => '{locale}'], function() use ($app) {
     $app->get('most-viewed', 'Article\PublicArticleController@getMostViewed');
 
     $app->get('latest', 'Article\PublicArticleController@getLatest');
+
+    $app->get('category/{category_slug}', 'Article\PublicArticleController@getArticleByCategories');
   });
 
 });

@@ -1,5 +1,7 @@
 <?php
 
+$app->get('global-data', 'AdminRequestController@getGlobalData');
+
 $app->group(['prefix' => 'auth'], function() use($app){
 
   $app->put('register', 'Auth\AuthRequestController@register');

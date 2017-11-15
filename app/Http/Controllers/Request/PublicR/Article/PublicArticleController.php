@@ -64,7 +64,11 @@ class PublicArticleController extends Controller
 
       $data['author']['name'] = $author->name;
       $data['author']['profile_image'] = $author->profile_image;
-      $data['author']['bio'] = $author->biography;
+      $data['author']['bio'] = "";
+
+      $bio = json_decode($author->biography);
+      $key = array_search( $language->slug, array_column($bio, 'slug'));
+      if($key === 0 || $key) $data['author']['bio'] = $bio[$key]->bio;
 
       $article->views = $article->views + 1;
 
@@ -105,6 +109,23 @@ class PublicArticleController extends Controller
     public function getArticleSearchByKeywords()
     {
 
+    }
+
+    public function getArticleByCategories($locale, $category_slug)
+    {
+      if(!$category = Category::where('slug', $category_slug)->first())
+        return API::responseApi([
+          'header' => 'Hata', 'message' => 'Aradığınız Kategori sistemimizde kayıtlı değil', 'state' => 'error', 'pop_up' => true
+        ]);
+
+      if(!$language = Language::where('slug', $locale)->first())
+        return API::responseApi([
+          'header' => 'Hata', 'message' => 'Aradığınız Dil sistemimizde kayıtlı değil', 'state' => 'error', 'pop_up' => true
+        ]);
+
+      $articles = PublicApi::getArticlesByCategory($language->id, $category);
+
+      return response()->json($articles, 200);
     }
 
 }

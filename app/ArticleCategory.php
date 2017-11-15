@@ -25,4 +25,9 @@ class ArticleCategory extends Model
     protected $hidden = [
 
     ];
+
+  /*  public function articleContents()
+    {
+      return $this->hasMany('App\ArticleContent', 'article_id');
+    }*/
 }

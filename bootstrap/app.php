@@ -114,19 +114,19 @@ $app->singleton(
 |
 */
 
-$app->group(['namespace' => 'App\Http\Controllers\Request'], function ($app) {
+$app->router->group(['namespace' => 'App\Http\Controllers\Request'], function ($app) {
     require __DIR__.'/../routes/web.php';
 });
 
-$app->group(['namespace' => 'App\Http\Controllers\Request\Admin', 'prefix' => 'admin'], function ($app) {
+$app->router->group(['namespace' => 'App\Http\Controllers\Request\Admin', 'prefix' => 'admin'], function ($app) {
   require __DIR__.'/../routes/admin.php';
 });
 
-$app->group(['namespace' => 'App\Http\Controllers\Request\PublicR', 'prefix' => 'public'], function ($app) {
+$app->router->group(['namespace' => 'App\Http\Controllers\Request\PublicR', 'prefix' => 'public'], function ($app) {
   require __DIR__.'/../routes/public.php';
 });
 
-$app->group(['namespace' => 'App\Http\Controllers\Request\Image', 'prefix' => 'image'], function ($app) {
+$app->router->group(['namespace' => 'App\Http\Controllers\Request\Image', 'prefix' => 'image'], function ($app) {
   require __DIR__.'/../routes/image.php';
 });
 

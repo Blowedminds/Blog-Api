@@ -26,4 +26,19 @@ class Category extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function articles()
+    {
+      return $this->belongsToMany('App\Article', 'article_categories');
+    }
+
+  /*  public function articleCategories()
+    {
+      return $this->hasMany('App\ArticleCategory');
+    }*/
+
+    public function articleContents()
+    {
+      return $this->hasManyThrough('App\ArticleContent', 'App\ArticleCategory', 'category_id', 'article_id', 'id', 'article_id');
+    }
 }

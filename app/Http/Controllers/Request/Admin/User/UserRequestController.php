@@ -68,7 +68,7 @@ class UserRequestController extends Controller
 
     $user_data->name = $request->input('name');
 
-    $user_data->biography = $request->input('bio');
+    $user_data->biography = json_encode($request->input('bio'));
 
     $user_data->save();
 

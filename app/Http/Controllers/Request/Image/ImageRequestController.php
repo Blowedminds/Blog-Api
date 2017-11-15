@@ -145,7 +145,7 @@ class ImageRequestController extends Controller
     $not_found_response = ['header' => 'Hata', 'message' => 'Fotoğrafı bulamadık', 'state' => 'error'];
 
     if(!$image = ImageApi::isAccessible($image))
-      return API::responseApi($not_found_response);
+      return API::responseApi($not_found_response, 404);
 
     return ImageApi::file(storage_path('/app/albums/'.$image->u_id.'/thumb_'.$image->u_id.".".$image->type),
                           ['Content-Type' => "image/$image->type"]
@@ -157,7 +157,7 @@ class ImageRequestController extends Controller
     $not_found_response = ['header' => 'Hata', 'message' => 'Fotoğrafı bulamadık', 'state' => 'error'];
 
     if(!$image = ImageApi::isAccessible($image))
-      return API::responseApi($not_found_response);
+      return API::responseApi($not_found_response, 404);
 
     return ImageApi::file(storage_path('/app/albums/'.$image->u_id.'/'.$image->u_id.".".$image->type),
                             ['Content-Type' => "image/$image->type"]
