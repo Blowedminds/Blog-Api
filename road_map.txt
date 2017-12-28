@@ -1,0 +1,3 @@
+/*SHOULD CHANGE*/
+*Public Api getLatest and getMostViewed query should change, prevent checking if content exists
+*When an article has written but not published, its release date is different.

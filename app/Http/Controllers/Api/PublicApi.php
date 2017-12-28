@@ -77,8 +77,6 @@ class PublicApi
   */
   public static function getArticlesByCategory($locale_id, $category)
   {
-    return $article = $category->articleContents()->where('language', $locale_id)->where('published', 1)->with('article')->paginate(10);/*$articles = $category->articles()->with(['contents' => function ($query) use($locale_id) {
-              $query->where('language', $locale_id)->where('published', 1);
-           }])->paginate(10);*/
+    return $article = $category->articleContents()->where('language', $locale_id)->where('published', 1)->with('article')->paginate(10);
   }
 }

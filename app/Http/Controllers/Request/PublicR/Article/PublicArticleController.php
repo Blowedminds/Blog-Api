@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\PublicApi;
 use App\User;
 use App\UserData;
 use App\Article;
+use App\ArticleContent;
 use App\Category;
 use App\Language;
 
@@ -68,6 +69,7 @@ class PublicArticleController extends Controller
 
       $bio = json_decode($author->biography);
       $key = array_search( $language->slug, array_column($bio, 'slug'));
+
       if($key === 0 || $key) $data['author']['bio'] = $bio[$key]->bio;
 
       $article->views = $article->views + 1;
@@ -77,7 +79,7 @@ class PublicArticleController extends Controller
       return response()->json($data, 200);
     }
 
-    public function getMostViewed($locale)
+    public function getMostVieweds($locale)
     {
       $response = [
         'header' => 'Hata', 'message' => 'Aradığınız Makaleyi Bulamadık', 'state' => 'error', 'pop_up' => true
@@ -89,7 +91,7 @@ class PublicArticleController extends Controller
       return response()->json(PublicApi::getMostViewed($language->id), 200);
     }
 
-    public function getLatest($locale)
+    public function getLatests($locale)
     {
       $response = [
         'header' => 'Hata', 'message' => 'Aradığınız Makaleyi Bulamadık', 'state' => 'error', 'pop_up' => true
@@ -101,17 +103,7 @@ class PublicArticleController extends Controller
       return response()->json(PublicApi::getLatest($language->id), 200);
     }
 
-    public function getArticleArchive($time)
-    {
-
-    }
-
-    public function getArticleSearchByKeywords()
-    {
-
-    }
-
-    public function getArticleByCategories($locale, $category_slug)
+    public function getArticlesByCategory($locale, $category_slug)
     {
       if(!$category = Category::where('slug', $category_slug)->first())
         return API::responseApi([
@@ -126,6 +118,28 @@ class PublicArticleController extends Controller
       $articles = PublicApi::getArticlesByCategory($language->id, $category);
 
       return response()->json($articles, 200);
+    }
+
+    public function getArticlesBySearch($locale, Request $request)
+    {
+      if(!$language = Language::where('slug', $locale)->first())
+        return API::responseApi([
+          'header' => 'Hata', 'message' => 'Aradığınız Dil sistemimizde kayıtlı değil', 'state' => 'error', 'pop_up' => true
+        ]);
+
+      $query = $request->input('q');
+
+      return ArticleContent::where('title', 'like', '%'.$query.'%')->where('language', $language->id)->get();
+    }
+
+    public function getArticleByDetailedSearch()
+    {
+
+    }
+
+    public function getArticlesByArchive(Request $request)
+    {
+      //$article = Article::where('');
     }
 
 }
