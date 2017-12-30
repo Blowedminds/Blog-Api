@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+use App\Exceptions\CustomExceptions\RestrictedAreaException;
+use App\Http\Controllers\Api\MainApi;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -21,6 +24,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        RestrictedAreaException::class,
     ];
 
     /**
@@ -45,6 +49,29 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        switch ($e) {
+          case $e instanceof RestrictedAreaException:
+            return MainApi::responseApi([
+              'header' => 'Kısıtlı Erişim', 'message' => 'Bu sayfaya erişiminiz yok', 'state' => 'error'
+            ], 422);
+            break;
+          case $e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException:
+            return MainApi::responseApi(['error' => 'Unauthorized'],401);
+            break;
+          case $e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException:
+            return MainApi::responseApi(['error' => 'Unauthorized'],401);
+            break;
+          case $e instanceof \Tymon\JWTAuth\Exceptions\JWTException:
+            return MainApi::responseApi(['error' => 'Unauthorized'],401);
+            break;
+          case $e instanceof \Illuminate\Auth\AuthenticationException:
+            return MainApi::responseApi(['error' => 'Unauthorized'],401);
+            break;
+          default:
+
+            break;
+        }
+
         return parent::render($request, $e);
     }
 }

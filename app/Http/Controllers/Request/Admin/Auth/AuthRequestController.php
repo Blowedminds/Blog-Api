@@ -12,7 +12,7 @@ class AuthRequestController extends Controller
 {
   public function __construct()
   {
-    $this->middleware('auth', ['only' => ['logout']]);
+    $this->middleware('auth', ['only' => ['logout', 'register']]);
   }
 
   public function login(Request $request)
@@ -96,30 +96,23 @@ class AuthRequestController extends Controller
 
   private static function _login($credentials)
   {
-    $data = [];
-
     try{
         if (!$token = app('auth')->attempt($credentials)){
 
-            $data['data'] = ['error' => 'Invalid Credentials'];
-            $data['status'] = 401;
-            return $data;
+            return ['data' => ['error' => 'Invalid Credentials'], 'status' => 401];
         }
     }catch(JWTException $e) {
 
-        $data['data'] = ['error' => 'Could not create a token'];
-        $data['status'] = 500;
-        return $data;
+        return ['data' => ['error' => 'Could not create a token'], 'status' => 500];
     }
-    $data['data'] = ['token' => $token];
-    $data['status'] = 200;
-    return $data;
+
+    return ['data' => ['token' => $token], 'status' => 200];
   }
 
   private function _checkAuth()
   {
-    if (!AuthApi::authUser()) return false;
+    //if (!AuthApi::authUser()) return false;
 
-    return true;
+    return false;
   }
 }
