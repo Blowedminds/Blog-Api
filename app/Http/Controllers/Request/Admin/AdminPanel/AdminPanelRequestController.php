@@ -30,15 +30,15 @@ class AdminPanelRequestController extends Controller
 
     foreach ($menus as $key => $menu) {
       $data['menus'][$i]['id'] = $menu->id;
-      $data['menus'][$i]['menu_name'] = $menu->menu_name;
-      $data['menus'][$i]['menu_parent'] = $menu->menu_parent;
-      $data['menus'][$i]['menu_tooltip'] = $menu->menu_tooltip;
-      $data['menus'][$i]['menu_url'] = $menu->menu_url;
-      $data['menus'][$i]['menu_weight'] = $menu->menu_weight;
+      $data['menus'][$i]['name'] = $menu->name;
+      $data['menus'][$i]['parent'] = $menu->parent;
+      $data['menus'][$i]['tooltip'] = $menu->tooltip;
+      $data['menus'][$i]['url'] = $menu->url;
+      $data['menus'][$i]['weight'] = $menu->weight;
       $j = 0;
 
         foreach ($menu->menuRoles as $key => $role) {
-          $data['menus'][$i]['menu_roles'][$j] = $role->role_id;
+          $data['menus'][$i]['roles'][$j] = $role->role_id;
           $j++;
         }
 
@@ -181,35 +181,35 @@ class AdminPanelRequestController extends Controller
   {
     $this->validate($request, [
       'id' => 'required',
-      'menu_name' => 'required',
-      'menu_url' => 'required',
-      //'menu_roles' => 'required',
-      'menu_tooltip' => 'required',
-      'menu_weight' => 'required',
-      'menu_parent' => 'required'
+      'name' => 'required',
+      'url' => 'required',
+      //'roles' => 'required',
+      'tooltip' => 'required',
+      'weight' => 'required',
+      'parent' => 'required'
     ]);
 
     if(!$category = Menu::find(intval($request->input('id')))) return;
 
-    MenuRole::where('menu_id', $request->input('id'))->forceDelete();
+    MenuRole::where('id', $request->input('id'))->forceDelete();
 
-    if($request->has('menu_roles'))
-      foreach ($request->input('menu_roles') as $key => $value) {
+    if($request->has('roles'))
+      foreach ($request->input('roles') as $key => $value) {
         MenuRole::create([
           'menu_id' => $request->input('id'),
           'role_id' => $value['id']
         ]);
       }
 
-    $category->menu_name = $request->input('menu_name');
+    $category->name = $request->input('name');
 
-    $category->menu_url = $request->input('menu_url');
+    $category->url = $request->input('url');
 
-    $category->menu_tooltip = $request->input('menu_tooltip');
+    $category->tooltip = $request->input('tooltip');
 
-    $category->menu_weight = intval($request->input('menu_weight'));
+    $category->weight = intval($request->input('weight'));
 
-    $category->menu_parent = intval($request->input('menu_parent'));
+    $category->parent = intval($request->input('parent'));
 
     $category->save();
 
@@ -219,24 +219,24 @@ class AdminPanelRequestController extends Controller
   public function putMenu(Request $request)
   {
     $this->validate($request, [
-      'menu_name' => 'required',
-      'menu_url' => 'required',
-      //'menu_roles' => 'required',
-      'menu_tooltip' => 'required',
-      'menu_weight' => 'required',
-      'menu_parent' => 'required'
+      'name' => 'required',
+      'url' => 'required',
+      //'roles' => 'required',
+      'tooltip' => 'required',
+      'weight' => 'required',
+      'parent' => 'required'
     ]);
 
     $menu = Menu::create([
-      'menu_name' => $request->input('menu_name'),
-      'menu_url' => $request->input('menu_url'),
-      'menu_tooltip' => $request->input('menu_tooltip'),
-      'menu_weight' => $request->input('menu_weight'),
-      'menu_parent' => $request->input('menu_parent'),
+      'name' => $request->input('name'),
+      'url' => $request->input('url'),
+      'tooltip' => $request->input('tooltip'),
+      'weight' => $request->input('weight'),
+      'parent' => $request->input('parent'),
     ]);
 
-    if($request->has('menu_roles'))
-      foreach ($request->input('menu_roles') as $key => $value) {
+    if($request->has('roles'))
+      foreach ($request->input('roles') as $key => $value) {
         MenuRole::create([
           'menu_id' => $menu->id,
           'role_id' => $value['id']
