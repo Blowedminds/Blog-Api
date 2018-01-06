@@ -4,4 +4,6 @@ Homestead.json
 Homestead.yaml
 .env
 artisan_serve.bat
-back_up.bat
+*.bat
+.idea
+*.txt

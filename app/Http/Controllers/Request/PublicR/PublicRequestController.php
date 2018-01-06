@@ -25,10 +25,10 @@ class PublicRequestController extends Controller
 
     foreach ($menus as $key => $value) {
 
-      $data[$i]['name'] = $value->menu_name;
-      $data[$i]['tooltip'] =  $value->menu_tooltip;
-      $data[$i]['url'] = $value->menu_url;
-      $data[$i]['weight'] = $value->menu_weight;
+      $data[$i]['name'] = $value->name;
+      $data[$i]['tooltip'] =  $value->tooltip;
+      $data[$i]['url'] = $value->url;
+      $data[$i]['weight'] = $value->weight;
 
       $i++;
     }

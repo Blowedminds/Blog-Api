@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 
+use App\Language;
 use App\Http\Controllers\Api\MainApi as API;
 use App\Http\Controllers\Api\AuthApi;
 use App\Http\Controllers\Api\UserApi;
+use App\Exceptions\CustomExceptions\InValidInputException;
 
 class UserRequestController extends Controller
 {
@@ -36,9 +38,19 @@ class UserRequestController extends Controller
 
     $user_data = $user->userData;
 
-    $role = $user->roles()->first();
+    $user_bio = json_decode($user_data->biography);
 
-    $data['bio'] = json_decode($user_data->biography);
+    $data['bio'] = Language::all('slug')->map( function($language) use($user_bio) {
+
+        $key = array_search($language->slug, array_column($user_bio, 'slug'));
+
+        return [
+            'slug' => $language->slug,
+            'bio' => $key !== false ? $user_bio[$key]->bio : null
+        ];
+    });
+
+    $role = $user->roles()->first();
 
     $data['profile_image'] = $user_data->profile_image;
 
@@ -60,13 +72,15 @@ class UserRequestController extends Controller
       'bio' => 'required'
     ]);
 
+    if($this->isValidBio($request->input('bio'))){
+        throw new InValidInputException;
+    }
+
     $user = AuthApi::authUser();
 
     $user->name = $request->input('name');
 
     $user_data = $user->userData;
-
-    $user_data->name = $request->input('name');
 
     $user_data->biography = json_encode($request->input('bio'));
 
@@ -138,5 +152,15 @@ class UserRequestController extends Controller
     });
 
     return response()->json($data, 200);
+  }
+
+  private function isValidBio($bio)
+  {
+      $is_valid = Language::all('slug')->reduce(function($carry, $language) use($bio){
+
+          return $carry && ($bio[$language->slug] ?? null);
+      }, true);
+
+      return (bool) $is_valid;
   }
 }
