@@ -38,18 +38,18 @@ class UserRequestController extends Controller
 
     $user_data = $user->userData;
 
-    $user_bio = json_decode($user_data->biography);
+    $data['bio'] = json_decode($user_data->biography);
 
-    $data['bio'] = Language::all('slug')->map( function($language) use($user_bio) {
+    /*$data['bio'] = Language::all('slug')->map( function($language) use($user_bio) {
 
         $key = array_search($language->slug, array_column($user_bio, 'slug'));
 
         return [
             'slug' => $language->slug,
-            'bio' => $key !== false ? $user_bio[$key]->bio : null
+            'bio' => $key != false ? $user_bio[$key]->bio : null
         ];
     });
-
+*/
     $role = $user->roles()->first();
 
     $data['profile_image'] = $user_data->profile_image;
