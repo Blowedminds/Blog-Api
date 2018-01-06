@@ -73,7 +73,6 @@ class AuthRequestController extends Controller
 
     $userRole = \App\UserData::create([
       'user_id' => $user->user_id,
-      'name' => $name,
       'role_id' => 2,
       'profile_image' => 'DEFAULT_IMAGE',
       'biography' => "{'tr':'Buraya kendinizi anlatan kısa bir metin yazın!''}"
