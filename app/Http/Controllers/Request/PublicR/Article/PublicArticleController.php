@@ -35,7 +35,7 @@ class PublicArticleController extends Controller
 
       if(!$article = Article::where('slug', $slug)->with(['contents' => function ($query) use($language_id){
         $query->where('language', $language_id)->where('published', 1);
-      }, 'categories'])->first())
+      }, 'categories', 'author'])->first())
 
         return API::responseApi($response);
 
@@ -52,29 +52,34 @@ class PublicArticleController extends Controller
 
       $article_content = $article->contents[0];
 
-      $author = UserData::where('user_id', $article->author)->first();
+      $availableLanguages = $article->availableLanguages->map(function($language) {
+
+        return [
+          'name' => $language->name,
+          'slug' => $language->slug
+        ];
+      });
 
       $data['title'] = $article_content->title;
       $data['sub_title'] = $article_content->sub_title;
       $data['body'] = $article_content->body;
       $data['keywords'] = $article_content->keywords;
       $data['categories'] = $temp_categories;
-      $data['available_languages'] = API::articleAvailableLanguages($article->id);
+      $data['available_languages'] = $availableLanguages;
       $data['slug'] = $article->slug;
       $data['image'] = $article->image;
 
-      $data['author']['name'] = $author->name;
-      $data['author']['profile_image'] = $author->profile_image;
+      $data['author']['name'] = $article->author->name;
+      $data['author']['profile_image'] = $article->author->userData->profile_image;
       $data['author']['bio'] = "";
 
-      $bio = json_decode($author->biography ?? []);
+      $bio = json_decode($article->author->userData->biography ?? []);
 
       if($bio){
           $key = array_search( $language->slug, array_column($bio, 'slug'));
 
           if($key === 0 || $key) $data['author']['bio'] = $bio[$key]->bio;
       }
-
 
       $article->views = $article->views + 1;
 

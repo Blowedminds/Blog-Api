@@ -1,47 +1,21 @@
 <?php
-
 namespace App\Http\Controllers\Api;
+
+use App\Language;
+use App\Category;
+use App\Article;
 
 class MainApi
 {
 
   public static function languages()
   {
-    return \App\Language::all();
+    return Language::all();
   }
 
   public static function categories()
   {
-    return \App\Category::all();
-  }
-
-  public static function articleAvailableLanguages($article_id)
-  {
-    if(!$languages = \App\Article::find($article_id)->availableLanguages)
-      return false;
-
-    $data = []; $i = 0;
-
-    foreach ($languages as $key => $value) {
-
-      $data[$i]['name'] = $value->name;
-      $data[$i]['slug'] = $value->slug;
-
-      $i++;
-    }
-    return $data;
-  }
-
-  public static function trashedArticle($user)
-  {
-    if(!$roles = $user->rolesByRoleId(1)->first()){
-      $articles = \App\Article::onlyTrashed()->where('author', $user->user_id)->with(['trashed_contents', 'author' => function($query) {$query->select('user_id', 'name');}])->paginate(15);
-    }else {
-      $articles = \App\Article::onlyTrashed()->with(['trashed_contents', 'author' => function($query) {
-        $query->select('user_id', 'name');
-      }])->paginate(15);
-    }
-    return $articles;
+    return Category::all();
   }
 
   public static function redirectApi($data)

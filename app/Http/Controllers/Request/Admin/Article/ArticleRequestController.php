@@ -26,36 +26,33 @@ class ArticleRequestController extends Controller
     'required' => ':attribute alanı gereklidir, lütfen doldurunuz'
   ];
 
+
   public function __construct()
   {
     $this->middleware('auth');
   }
 
-  public function getArticles()
+  public function getArticles(Request $request)
   {
     $user = AuthApi::authUser();
 
-    if($roles = $user->rolesByRoleId("1")->first())
+    $per_page = $request->has('per-page') ? $request->input('per-page') : 5;
 
-      return response()->json(
-                Article::with(['categories', 'contents', 'author' => function($query) {
-                           $query->select('user_id', 'name');
-                         }])->orderBy('created_at', 'DESC')->paginate(15)
-             , 200);
+    $articles = $user->articles()
+                     ->with(['categories', 'contents', 'author' => function($query) {$query->select('user_id', 'name');}])
+                     ->orderBy('created_at', 'DESC')
+                     ->paginate($per_page);
 
-    return response()->json(
-                $user->articles()
-                ->with(['categories', 'contents', 'author' => function($query) {$query->select('user_id', 'name');}])
-                ->orderBy('created_at', 'DESC')
-                ->paginate(15)
-          , 200);
+    return response()->json($articles, 200);
   }
 
   public function getTrash()
   {
     $user = AuthApi::authUser();
 
-    $trashedArticle = API::trashedArticle($user);
+    $trashedArticle = $user->trashedArticles()
+                           ->with(['trashed_contents', 'author' => function($query) {$query->select('user_id', 'name');}])
+                           ->paginate(1);
 
     return response()->json($trashedArticle, 200);
   }
@@ -113,7 +110,7 @@ class ArticleRequestController extends Controller
 
     $article = Article::create([
       'slug' => $request->input('slug'),
-      'author' => $user->user_id,
+      'author_id' => $user->user_id,
       'image' => $request->input('image')
     ]);
 
@@ -392,7 +389,7 @@ class ArticleRequestController extends Controller
 
     $article_permission = $article->users;
 
-    if ($article->author != $user->user_id && !$role = $user->rolesByRoleId(1)->first())
+    if ($article->author_id != $user->user_id && !$role = $user->rolesByRoleId(1)->first())
       return API::responseApi([
         'header' => 'Yetkisiz İşlem', 'message' => 'Bu makaleyi düzenlemeye yetkiniz yok!', 'state' => 'error'
       ]);
@@ -442,7 +439,7 @@ class ArticleRequestController extends Controller
 
     $article_permission = $article->users;
 
-    if ($article->author != $user->user_id && !$role = $user->rolesByRoleId(1)->first())
+    if ($article->author_id != $user->user_id && !$role = $user->rolesByRoleId(1)->first())
       return API::responseApi([
         'header' => 'Yetkisiz İşlem', 'message' => 'Bu makaleyi düzenlemeye yetkiniz yok!', 'state' => 'error'
       ]);

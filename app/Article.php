@@ -19,7 +19,7 @@ class Article extends Model
     protected $casts = [ 'id' => 'integer', 'views' => 'integer' ];
 
     protected $fillable = [
-      'slug', 'author', 'image', 'views'
+      'slug', 'author_id', 'image', 'views'
     ];
 
     protected $hidden = [
@@ -63,7 +63,7 @@ class Article extends Model
 
     public function author()
     {
-      return $this->belongsTo('App\User', 'author', 'user_id');
+      return $this->belongsTo('App\User', 'author_id', 'user_id');
     }
 
     public function olds()

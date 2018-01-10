@@ -7,3 +7,4 @@ artisan_serve.bat
 *.bat
 .idea
 *.txt
+/public/images

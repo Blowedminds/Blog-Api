@@ -23,13 +23,11 @@ class UserRequestController extends Controller
   {
     $user = AuthApi::authUser();
 
-    $data['name'] = $user->name;
-
-    $data['user_id'] = $user->user_id;
-
-    $data['role_id'] = $user->roles()->first()->id;
-
-    return response()->json($data);
+    return response()->json([
+              'name' => $user->name,
+              'user_id' => $user->user_id,
+              'role_id' => $user->role[0]->id
+            ]);
   }
 
   public function getUserProfile()
@@ -136,27 +134,22 @@ class UserRequestController extends Controller
   {
     $user = AuthApi::authUser();
 
-    $menus = $user->menusByRole();
+    $menus = $user->role[0]->menus->map( function($menu) {
+      return [
+        'name' => $menu->name,
+        'tooltip' => $menu->tooltip,
+        'url' => $menu->url,
+        'weight' => $menu->weight
+      ];
+    })->toArray();
 
-    $data = []; $i = 0;
+    //$data = array_unique($data, SORT_REGULAR);
 
-    foreach ($menus as $key => $value) {
-
-      $data[$i]['name'] = $value->name;
-      $data[$i]['url'] = $value->url;
-      $data[$i]['tooltip'] = $value->tooltip;
-      $data[$i]['weight'] = $value->weight;
-
-      $i++;
-    }
-
-    $data = array_unique($data, SORT_REGULAR);
-
-    usort($data, function($a, $b) {
+    usort($menus, function($a, $b) {
         return $b['weight'] - $a['weight'];
     });
 
-    return response()->json($data, 200);
+    return response()->json($menus, 200);
   }
 
   private function isValidBio($bio)

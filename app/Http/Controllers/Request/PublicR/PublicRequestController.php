@@ -19,27 +19,20 @@ class PublicRequestController extends Controller
 {
   public function getMenus($locale)
   {
-    $menus = Role::find(3)->menus;
+    $menus = Role::find(3)->menus->map( function($menu) {
+      return [
+        'name' => $menu->name,
+        'tooltip' => $menu->tooltip,
+        'url' => $menu->url,
+        'weight' => $menu->weight
+      ];
+    })->toArray();
 
-    $data = []; $i = 0;
-
-    foreach ($menus as $key => $value) {
-
-      $data[$i]['name'] = $value->name;
-      $data[$i]['tooltip'] =  $value->tooltip;
-      $data[$i]['url'] = $value->url;
-      $data[$i]['weight'] = $value->weight;
-
-      $i++;
-    }
-
-    $data = array_unique($data, SORT_REGULAR);
-
-    usort($data, function($a, $b) {
+    usort($menus, function($a, $b) {
         return $a['weight'] - $b['weight'];
     });
 
-    return response()->json($data, 200);
+    return response()->json($menus, 200);
   }
 
   public function getLanguages($locale)

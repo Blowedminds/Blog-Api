@@ -83,7 +83,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
       return $this->belongsToMany('App\Article', 'article_permissions', 'user_id', 'article_id');
     }
 
+    public function trashedArticles()
+    {
+      return $this->articles()->onlyTrashed();
+    }
+
+    //Deprecated
     public function roles()
+    {
+      return $this->belongsToMany('App\Role', 'user_datas', 'user_id', 'role_id');
+    }
+
+    public function role()
     {
       return $this->belongsToMany('App\Role', 'user_datas', 'user_id', 'role_id');
     }

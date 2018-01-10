@@ -27,7 +27,7 @@ class PublicApi
       $data[$i]['content']['title'] = $article->contents[0]->title;
 
       $data[$i]['categories'] = $article->categories;
-      $data[$i]['author'] = $article->author;
+      $data[$i]['author'] = $article->author_id;
       $data[$i]['image'] = $article->image;
       $data[$i]['slug'] = $article->slug;
       $data[$i]['views'] = $article->views;
@@ -60,7 +60,7 @@ class PublicApi
       $data[$i]['content']['title'] = $article->contents[0]->title;
 
       $data[$i]['categories'] = $article->categories;
-      $data[$i]['author'] = $article->author;
+      $data[$i]['author'] = $article->author_id;
       $data[$i]['image'] = $article->image;
       $data[$i]['slug'] = $article->slug;
       $data[$i]['views'] = $article->views;
