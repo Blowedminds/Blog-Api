@@ -20,7 +20,7 @@ class ImageApi
 
     if ($query->public == 1) return $query;
 
-    if(!$user = MainAuthApi::authUser())  return false;
+    if(!$user = AuthApi::authUser())  return false;
 
     if($query->owner != $user->user_id) return false;
 
