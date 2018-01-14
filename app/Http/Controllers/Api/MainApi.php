@@ -3,7 +3,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Language;
 use App\Category;
-use App\Article;
+use Illuminate\Http\Request;
+use App\Exceptions\UnknownLanguageException;
 
 class MainApi
 {
@@ -16,6 +17,16 @@ class MainApi
   public static function categories()
   {
     return Category::all();
+  }
+
+  public static function getLanguage()
+  {
+      if(!$language = Language::where('slug', request()->route('locale'))->first()) {
+
+          throw new UnknownLanguageException;
+      }
+
+      return $language;
   }
 
   public static function redirectApi($data)

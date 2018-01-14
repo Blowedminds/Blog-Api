@@ -49,7 +49,7 @@ class PublicApi
 
     foreach ($latest as $key => $article) {
 
-      if($i >= 7) break;
+      if($i >= 15) break;
 
       if(!isset($article->contents[0])) continue;
 
@@ -64,7 +64,7 @@ class PublicApi
       $data[$i]['image'] = $article->image;
       $data[$i]['slug'] = $article->slug;
       $data[$i]['views'] = $article->views;
-      $data[$i]['created_at'] = $article->created_at;
+      $data[$i]['created_at'] = $article->created_at->format('j F Y');
 
       $i++;
     }

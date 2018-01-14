@@ -38,7 +38,7 @@ class Article extends Model
 
     public function categories()
     {
-      return $this->belongsToMany('App\Category', 'article_categories', 'article_id', 'category_id');
+      return $this->belongsToMany('App\Category', 'article_categories');
     }
 
     public function article_categories()
@@ -58,7 +58,12 @@ class Article extends Model
 
     public function contents()
     {
-      return $this->hasMany('App\ArticleContent', 'article_id', 'id');
+      return $this->hasMany('App\ArticleContent');
+    }
+
+    public function languageContent()
+    {
+        return $this->hasOne('App\ArticleContent');
     }
 
     public function author()
