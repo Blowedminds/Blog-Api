@@ -117,9 +117,11 @@ class ReaderArticleController extends Controller
     {
       $query = $request->input('q');
 
-      return Article::whereHas('contents', function ($q) use($query) {
-          $q->where('title', 'like', '%'.$query.'%')->where('language', $this->language->id)->get();
-      });
+      $articles = Article::whereHas('contents', function ($q) use($query) {
+          $q->where('title', 'like', '%'.$query.'%')->where('language', $this->language->id);
+      })->with('contents')->get();
+
+      return response()->json($articles, 200);
     }
 
     public function getArticleByDetailedSearch()

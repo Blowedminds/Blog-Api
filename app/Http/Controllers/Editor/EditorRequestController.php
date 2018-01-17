@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Editor;
 
+use App\Category;
+use App\Language;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,35 +21,27 @@ class EditorRequestController extends Controller
 
   public function getGlobalData()
   {
-    $language = API::languages();
+    $languages = Language::all()->map( function ($language) {
+       return [
+          'id' => $language->id,
+          'name' => $language->name,
+          'slug' => $language->slug
+       ];
+    });
 
-    $i = 0; $languages = [];
+    $categories = Category::all()->map( function ($category) {
 
-    foreach ($language as $key => $value) {
+        return [
+            'id' => $category->id,
+            'name' => $category->name,
+            'description' => $category->description,
 
-      $languages[$i]['id'] = $value->id;
-      $languages[$i]['name'] = $value->name;
-      $languages[$i]['slug'] = $value->slug;
+        ];
+    });
 
-      $i++;
-    }
-
-    $category = API::categories();
-
-    $k = 0; $categories = [];
-
-    foreach ($category as $key => $value) {
-
-      $categories[$k]['id'] = $value->id;
-      $categories[$k]['name'] = $value->name;
-      $categories[$k]['description'] = $value->description;
-
-      $k++;
-    }
-
-    $data['languages'] = $languages;
-    $data['categories'] = $categories;
-
-    return response()->json($data, 200);
+    return response()->json([
+        'languages' => $languages,
+        'categories' => $categories
+    ], 200);
   }
 }

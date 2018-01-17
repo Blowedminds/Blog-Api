@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Reader;
 
+use App\Category;
 use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,6 +19,10 @@ use App\Image;
 
 class ReaderRequestController extends Controller
 {
+    public function __construct()
+    {
+    }
+
   public function getMenus($locale)
   {
     $menus = Role::find(3)->menus->map( function($menu) {
@@ -79,19 +84,15 @@ class ReaderRequestController extends Controller
 
   public function getCategories()
   {
-    $category = API::categories();
+      $categories = Category::all()->map( function ($category) {
 
-    $k = 0; $categories = [];
-
-    foreach ($category as $key => $value) {
-
-      $categories[$k]['id'] = $value->id;
-      $categories[$k]['name'] = $value->name;
-      $categories[$k]['description'] = $value->description;
-      $categories[$k]['slug'] = $value->slug;
-
-      $k++;
-    }
+          return [
+              'id' => $category->id,
+              'name' => $category->name,
+              'description' => $category->description,
+              'slug' => $category->slug
+          ];
+      });
 
     return response()->json($categories, 200);
   }

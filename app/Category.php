@@ -18,7 +18,7 @@ class Category extends Model
     protected $casts = [ 'id' => 'integer' ];
 
     protected $fillable = [
-      'name', 'description'
+      'name', 'description', 'slug'
     ];
 
     protected $hidden = [

@@ -23,39 +23,35 @@ class AdminPanelRequestController extends Controller
 
   public function getMenus()
   {
-    $menus = Menu::with(['menuRoles'])->get();
-    //return response()->json($menus, 200);
+    $menus = Menu::with(['menuRoles'])->get()->map( function($menu) {
 
-    $data = []; $i = 0;
+        $menu_roles = $menu->menuRoles->map(function ($menu_role) {
+            return $menu_role->role_id;
+        });
 
-    foreach ($menus as $key => $menu) {
-      $data['menus'][$i]['id'] = $menu->id;
-      $data['menus'][$i]['name'] = $menu->name;
-      $data['menus'][$i]['parent'] = $menu->parent;
-      $data['menus'][$i]['tooltip'] = $menu->tooltip;
-      $data['menus'][$i]['url'] = $menu->url;
-      $data['menus'][$i]['weight'] = $menu->weight;
-      $j = 0;
+        return [
+            'id' => $menu->id,
+            'name' => $menu->name,
+            'parent' => $menu->parent,
+            'tooltip' => $menu->tooltip,
+            'url' => $menu->url,
+            'weight' => $menu->weight,
+            'roles' => $menu_roles
+        ];
+    });
 
-        foreach ($menu->menuRoles as $key => $role) {
-          $data['menus'][$i]['roles'][$j] = $role->role_id;
-          $j++;
-        }
+    $roles = Role::all()->map(function($role) {
 
-      $i++;
-    }
+        return [
+            'id' => $role->id,
+            'name' => $role->name
+        ];
+    });
 
-    $roles = Role::all();
-
-    $i = 0;
-
-    foreach ($roles as $key => $role) {
-      $data['roles'][$i]['id'] = $role->id;
-      $data['roles'][$i]['role_name'] = $role->role_name;
-      $i++;
-    }
-
-    return response()->json($data, 200);
+    return response()->json([
+            'menus' => $menus,
+            'roles' => $roles
+        ], 200);
   }
 
   public function getCategories()
@@ -139,7 +135,8 @@ class AdminPanelRequestController extends Controller
     $this->validate($request, [
       'id' => 'required',
       'name' => 'required',
-      'description' => 'required'
+      'description' => 'required',
+      'slug' => 'required'
     ]);
 
     if(!$category = Category::find(intval($request->input('id')))) return;
@@ -147,6 +144,8 @@ class AdminPanelRequestController extends Controller
     $category->name = $request->input('name');
 
     $category->description = $request->input('description');
+
+    $category->slug = $request->input('slug');
 
     $category->save();
 
@@ -157,12 +156,14 @@ class AdminPanelRequestController extends Controller
   {
     $this->validate($request, [
       'name' => 'required',
-      'description' => 'required'
+      'description' => 'required',
+      'slug' => 'required'
     ]);
 
     $category = Category::create([
       'name' => $request->input('name'),
-      'description' => $request->input('description')
+      'description' => $request->input('description'),
+      'slug' => $request->input('slug')
     ]);
 
     return response()->json(['TEBRIKLER'], 200);
