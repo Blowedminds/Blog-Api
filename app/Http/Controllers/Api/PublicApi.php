@@ -9,7 +9,7 @@ class PublicApi
   public static function getMostViewed($locale_id)
   {
     $most_viewed = Article::orderBy('views', 'DESC')->with(['contents' => function ($query) use($locale_id){
-      $query->where('language', $locale_id)->where('published', 1);
+      $query->where('language_id', $locale_id)->where('published', 1);
     }, 'categories'])->take(10)->get();
 
     $data = []; $i = 0;
@@ -42,7 +42,7 @@ class PublicApi
   public static function getLatest($locale_id)
   {
     $latest = Article::orderBy('created_at', 'DESC')->with(['contents' => function ($query) use($locale_id){
-      $query->where('language', $locale_id)->where('published', 1);
+      $query->where('language_id', $locale_id)->where('published', 1);
     }, 'categories'])->take(20)->get();
 
     $data = []; $i = 0;
@@ -70,13 +70,5 @@ class PublicApi
     }
 
     return $data;
-  }
-  /*
-  * @params locale_id: the asked locale id | int, category: the asked category | Category Object
-  * @return Article Object
-  */
-  public static function getArticlesByCategory($locale_id, $category)
-  {
-    return $article = $category->articleContents()->where('language', $locale_id)->where('published', 1)->with('article')->paginate(10);
   }
 }

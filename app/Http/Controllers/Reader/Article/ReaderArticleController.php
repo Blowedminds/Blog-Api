@@ -31,10 +31,8 @@ class ReaderArticleController extends Controller
         'pop_up' => true
       ];
 
-      $language_id = $this->language->id;
-
-      if(!$article = Article::where('slug', $slug)->with(['contents' => function ($query) use($language_id){
-        $query->where('language', $language_id)->where('published', 1);
+      if(!$article = Article::where('slug', $slug)->with(['contents' => function ($query){
+        $query->where('language_id', $this->language->id)->where('published', 1);
       }, 'categories', 'author'])->first())
 
         return API::responseApi($response);
@@ -103,14 +101,13 @@ class ReaderArticleController extends Controller
 
     public function getArticlesByCategory($locale, $category_slug)
     {
-      if(!$category = Category::where('slug', $category_slug)->first())
-        return API::responseApi([
-          'header' => 'Hata', 'message' => 'Aradığınız Kategori sistemimizde kayıtlı değil', 'state' => 'error', 'pop_up' => true
-        ]);
+        $category = API::getCategory();
 
-      $articles = PublicApi::getArticlesByCategory($this->language->id, $category);
+        $articles = $category->articles()->whereHas('contents', function($q) {
+           $q->where('language_id', $this->language->id);
+        })->with('contents')->paginate(10);
 
-      return response()->json($articles, 200);
+        return response()->json($articles, 200);
     }
 
     public function getArticlesBySearch($locale, Request $request)
@@ -118,7 +115,7 @@ class ReaderArticleController extends Controller
       $query = $request->input('q');
 
       $articles = Article::whereHas('contents', function ($q) use($query) {
-          $q->where('title', 'like', '%'.$query.'%')->where('language', $this->language->id);
+          $q->where('title', 'like', '%'.$query.'%')->where('language_id', $this->language->id);
       })->with('contents')->get();
 
       return response()->json($articles, 200);

@@ -172,7 +172,7 @@ class ArticleRequestController extends Controller
         'state' => 'error'
       ]);
 
-    if ($article = ArticleContent::where('article_id', $request->input('id'))->where('language', $request->input('language'))->first()) {
+    if ($article = ArticleContent::where('article_id', $request->input('id'))->where('language', $request->input('language_id'))->first()) {
       return API::responseApi([
         'header' => 'Hata',
         'message' => 'Bu dile ait bir girdi var!',
@@ -184,7 +184,7 @@ class ArticleRequestController extends Controller
     $article_language = ArticleContent::create([
       'article_id' => $request->input('id'),
       'title' => $request->input('title'),
-      'language' => $request->input('language'),
+      'language_id' => $request->input('language'),
       'body' => $request->input('body'),
       'sub_title' => $request->input('sub_title'),
       'keywords' => $request->input('keywords'),
@@ -241,7 +241,7 @@ class ArticleRequestController extends Controller
         'sub_title' => $article_content->sub_title,
         'title' => $article_content->title,
         'title' => $article_content->title,
-        'language' => $article_content->language,
+        'language_id' => $article_content->language_id,
         'body' => $article_content->body,
         'keywords' => $article_content->keywords,
         'published' => $article_content->published,

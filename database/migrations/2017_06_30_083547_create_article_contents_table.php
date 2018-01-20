@@ -18,7 +18,7 @@ class CreateArticleContentsTable extends Migration
             $table->integer('article_id');
             $table->string('sub_title', 255);
             $table->string('title', 255);
-            $table->integer('language');
+            $table->integer('language_id');
             $table->longtext('body');
             $table->text('keywords');
             $table->integer('published');

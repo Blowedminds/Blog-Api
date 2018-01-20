@@ -28,6 +28,15 @@ class MainApi
 
       return $language;
   }
+  public static function getCategory()
+  {
+      if(!$category = Category::where('slug', request()->route('category_slug'))->first()) {
+
+          throw new UnknownLanguageException;
+      }
+
+      return $category;
+  }
 
   public static function redirectApi($data)
   {

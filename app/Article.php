@@ -28,12 +28,12 @@ class Article extends Model
 
     public function languages()
     {
-      return $this->belongsToMany('App\Language', 'article_contents', 'article_id', 'language');
+      return $this->belongsToMany('App\Language', 'article_contents', 'article_id', 'language_id');
     }
 
     public function availableLanguages($published = 1)
     {
-      return $this->belongsToMany('App\Language', 'article_contents', 'article_id', 'language')->wherePivot('published', $published);
+      return $this->belongsToMany('App\Language', 'article_contents', 'article_id', 'language_id')->wherePivot('published', $published);
     }
 
     public function categories()
