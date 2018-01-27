@@ -8,3 +8,4 @@ artisan_serve.bat
 .idea
 *.txt
 /public/images
+*.sh
