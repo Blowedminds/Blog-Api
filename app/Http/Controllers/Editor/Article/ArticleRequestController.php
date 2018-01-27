@@ -36,7 +36,7 @@ class ArticleRequestController extends Controller
   {
     $user = AuthApi::authUser();
 
-    $per_page = $request->has('per-page') ? $request->input('per-page') : 5;
+    $per_page = $request->input('per-page') ?? 5;
 
     $articles = $user->articles()
                      ->with(['categories', 'contents', 'author' => function($query) {$query->select('user_id', 'name');}])
@@ -212,7 +212,7 @@ class ArticleRequestController extends Controller
       'body' => 'required',
       'keywords' => 'required',
       'published' => 'required',
-      'language' => 'required',
+      'language_id' => 'required',
     ], $messages);
 
     $user = AuthApi::authUser();
@@ -226,7 +226,7 @@ class ArticleRequestController extends Controller
 
     $article = Article::find($request->input('id'));
 
-    $article_content = $article->contentByLanguage($request->input('language'))->first();
+    $article_content = $article->contentByLanguage($request->input('language_id'))->first();
 
     $response = "Makaleniz başarı ile güncellendi!";
 
@@ -430,7 +430,7 @@ class ArticleRequestController extends Controller
       'not_have_permission' => 'present|array'
     ]);
 
-    $have_permissionn = $request->input('have_permission');
+    $have_permission = $request->input('have_permission');
     $not_have_permission = $request->input('not_have_permission');
 
     $user = AuthApi::authUser();
@@ -444,7 +444,7 @@ class ArticleRequestController extends Controller
         'header' => 'Yetkisiz İşlem', 'message' => 'Bu makaleyi düzenlemeye yetkiniz yok!', 'state' => 'error'
       ]);
 
-    foreach ($have_permissionn as $key => $value) {
+    foreach ($have_permission as $key => $value) {
       if ($temp = UserData::where('user_id', $value['user_id'])->where('role_id', 1)->first()) continue;
 
       ArticlePermission::firstOrCreate(

@@ -10,7 +10,7 @@ class Admin
 {
   public function handle($request, Closure $next, $guard = null)
   {
-      if (count(AuthApi::authUser()->rolesByRoleId(1)->get()) == 0) {
+      if (auth()->user()->roles[0]->id != 1) {
         
           throw new RestrictedAreaException();
       }

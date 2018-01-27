@@ -78,7 +78,7 @@ class Article extends Model
 
     public function contentByLanguage($language)
     {
-      return $this->hasOne('App\\ArticleContent')->where('language', $language);
+      return $this->hasOne('App\\ArticleContent')->where('language_id', $language);
     }
 
     public function trashed_categories()

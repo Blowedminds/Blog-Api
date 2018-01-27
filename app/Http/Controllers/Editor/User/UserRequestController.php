@@ -25,7 +25,7 @@ class UserRequestController extends Controller
     return response()->json([
               'name' => $user->name,
               'user_id' => $user->user_id,
-              'role_id' => $user->role[0]->id
+              'role_id' => $user->roles[0]->id
             ]);
   }
 
@@ -133,7 +133,7 @@ class UserRequestController extends Controller
   {
     $user = AuthApi::authUser();
 
-    $menus = $user->role[0]->menus->map( function($menu) {
+    $menus = $user->roles[0]->menus->map( function($menu) {
       return [
         'name' => $menu->name,
         'tooltip' => $menu->tooltip,

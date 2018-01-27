@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Editor\AdminPanel;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Http\Controllers\Api\MainApi as API;
-
 use App\Menu;
 use App\Category;
 use App\Language;
@@ -26,8 +23,8 @@ class AdminPanelRequestController extends Controller
     $menus = Menu::with(['menuRoles'])->get()->map( function($menu) {
 
         $menu_roles = $menu->menuRoles->map(function ($menu_role) {
-            return $menu_role->role_id;
-        });
+            return ['id' => $menu_role->role_id];
+        })->toArray();
 
         return [
             'id' => $menu->id,
@@ -38,7 +35,11 @@ class AdminPanelRequestController extends Controller
             'weight' => $menu->weight,
             'roles' => $menu_roles
         ];
-    });
+    })->toArray();
+
+      usort($menus, function($a, $b) {
+          return $a['weight'] - $b['weight'];
+      });
 
     $roles = Role::all()->map(function($role) {
 
@@ -56,33 +57,29 @@ class AdminPanelRequestController extends Controller
 
   public function getCategories()
   {
-    $categories = Category::all();
+    $categories = Category::all()->map( function($category) {
+        return [
+            'id' => $category->id,
+            'name' => $category->name,
+            'slug' => $category->slug,
+            'description' => $category->description
+        ];
+    });
 
-    $data = []; $i = 0;
-
-    foreach ($categories as $key => $category) {
-      $data[$i]['id'] = $category->id;
-      $data[$i]['name'] = $category->name;
-      $data[$i]['description'] = $category->description;
-      $i++;
-    }
-    return response()->json($data, 200);
+    return response()->json($categories, 200);
   }
 
   public function getLanguages()
   {
-    $languages = Language::all();
+    $languages = Language::all()->map( function( $language) {
+        return [
+            'id' => $language->id,
+            'name' => $language->name,
+            'slug' => $language->slug
+        ];
+    });
 
-    $data = []; $i = 0;
-
-    foreach ($languages as $key => $language) {
-      $data[$i]['id'] = $language->id;
-      $data[$i]['name'] = $language->name;
-      $data[$i]['slug'] = $language->slug;
-      $i++;
-    }
-
-    return response()->json($data, 200);
+    return response()->json($languages, 200);
   }
 
   public function postLanguage(Request $request)
@@ -180,41 +177,41 @@ class AdminPanelRequestController extends Controller
 
   public function postMenu(Request $request)
   {
-    $this->validate($request, [
-      'id' => 'required',
-      'name' => 'required',
-      'url' => 'required',
-      //'roles' => 'required',
-      'tooltip' => 'required',
-      'weight' => 'required',
-      'parent' => 'required'
-    ]);
+      $menuUpdateKeys = [
+          'name' => 'required',
+          'url' => 'required',
+          'tooltip' => 'required',
+          'weight' => 'required',
+          'parent' => 'required'
+      ];
 
-    if(!$category = Menu::find(intval($request->input('id')))) return;
+      $validatedData = $request->validate(array_merge([
+          'id' => 'required',
+          'roles' => 'required'
+        ], $menuUpdateKeys));
 
-    MenuRole::where('id', $request->input('id'))->forceDelete();
+      $menu = Menu::findOrFail($validatedData['id']);
 
-    if($request->has('roles'))
-      foreach ($request->input('roles') as $key => $value) {
-        MenuRole::create([
-          'menu_id' => $request->input('id'),
-          'role_id' => $value['id']
-        ]);
+      foreach ($menuUpdateKeys as $key => $value) {
+
+          $menu->{$key} = $validatedData[$key];
       }
 
-    $category->name = $request->input('name');
+      MenuRole::where('menu_id', $validatedData['id'])->forceDelete();
 
-    $category->url = $request->input('url');
+      foreach ($validatedData['roles'] as $key => $value) {
 
-    $category->tooltip = $request->input('tooltip');
+          $role = Role::findOrFail($value['id']);
 
-    $category->weight = intval($request->input('weight'));
+          MenuRole::create([
+              'menu_id' => $menu->id,
+              'role_id' => $role->id
+          ]);
+      }
 
-    $category->parent = intval($request->input('parent'));
+      $menu->save();
 
-    $category->save();
-
-    return response()->json(['TEBRIKLER'], 200);
+      return response()->json(['TEBRIKLER'], 200);
   }
 
   public function putMenu(Request $request)
@@ -249,10 +246,8 @@ class AdminPanelRequestController extends Controller
 
   public function deleteMenu($id)
   {
-    if (!$category = Menu::find(intval($id))) return;
+      Menu::findOrFail($id)->forceDelete();
 
-    $category->forceDelete();
-
-    return response()->json(['TEBRIKLER'], 200);
+      return response()->json(['TEBRIKLER'], 200);
   }
 }

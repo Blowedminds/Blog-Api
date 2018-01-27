@@ -31,7 +31,7 @@ class ImageRequestController extends Controller
 
     $user = AuthApi::authUser();
 
-    if (!$request->hasFile('file') && !$file->isValid())
+    if (!$request->hasFile('file') && !$request->file('file')->isValid())
       return API::responseApi([
         'header' => 'Dosya Hatası', 'message' => 'Dosyayı alamadık', 'state' => 'error'
       ]);
@@ -101,43 +101,27 @@ class ImageRequestController extends Controller
 
   public function getImages()
   {
-    $user = AuthApi::authUser();
+    $images = Image::where('public', 1)
+                    ->orWhere('owner', auth()->user()->user_id)
+                    ->get()
+                    ->reduce( function ($carry, $image) {
 
-    $public = Image::where('public', 1)->get();
+                        $key = $image->owner == auth()->user()->user_id && $image->public == 0 ? 'private' : 'public';
 
-    $private = Image::where('owner', $user->user_id)->where('public', 0)->get();
+                        $carry[$key][] = [
+                            'name' => $image->name,
+                            'size' => $image->size,
+                            'width' => $image->width,
+                            'height' => $image->height,
+                            'type' => $image->type,
+                            'alt' => $image->alt,
+                            'u_id' => $image->u_id
+                        ];
 
-    $data = ['public' => [], 'private' => []];
+                        return $carry;
+                    }, ['private' => [], 'public' => []]);
 
-    $i = 0;
-
-    foreach ($public as $key => $value) {
-
-      $data['public'][$i]['name'] = $value->name;
-      $data['public'][$i]['size'] = $value->size;
-      $data['public'][$i]['width'] = $value->width;
-      $data['public'][$i]['height'] = $value->height;
-      $data['public'][$i]['type'] = $value->type;
-      $data['public'][$i]['alt'] = $value->alt;
-      $data['public'][$i]['u_id'] = $value->u_id;
-
-      $i++;
-    }
-    $i = 0;
-    foreach ($private as $key => $value) {
-
-      $data['private'][$i]['name'] = $value->name;
-      $data['private'][$i]['size'] = $value->size;
-      $data['private'][$i]['width'] = $value->width;
-      $data['private'][$i]['height'] = $value->height;
-      $data['private'][$i]['type'] = $value->type;
-      $data['private'][$i]['alt'] = $value->alt;
-      $data['private'][$i]['u_id'] = $value->u_id;
-
-      $i++;
-    }
-
-    return response()->json($data, 200);
+    return response()->json($images, 200);
   }
 
   public function getThumb($image)
@@ -166,11 +150,9 @@ class ImageRequestController extends Controller
 
   public function getEdit($image)
   {
-    $user = AuthApi::authUser();
-
-    if(!$image = self::canEditImage($image, $user->user_id))
+    if(!$image = self::canEditImage($image, auth()->user()->user_id))
         return API::responseApi([
-          'header' => 'Hata', 'message' => 'Aradığınız albüm ya yok yada erişemiyorsunuz'
+          'header' => 'Hata', 'message' => 'Aradığınız albüm yok, veya erişim hakkınız yok'
         ]);
 
     $data['name'] = $image->name;
@@ -205,7 +187,7 @@ class ImageRequestController extends Controller
 
     if(!$image = self::canEditImage($image, $user->user_id))
       return API::responseApi([
-              'header' => 'Hata', 'message' => 'Aradığınız albüm ya yok yada erişemiyorsunuz', 'state' => 'error'
+              'header' => 'Hata', 'message' => 'Aradığınız albüm yok, veya erişim hakkınız yok', 'state' => 'error'
             ]);
 
     $crop = $request->input('crop');
@@ -293,11 +275,9 @@ class ImageRequestController extends Controller
 
   public function deleteImage($image)
   {
-    $user = AuthApi::authUser();
-
     $not_found_access_denied = ['header' => 'Hata', 'message' => 'Aradığınız albüm ya yok yada erişemiyorsunuz', 'state' => 'error'];
 
-    if(!$image = self::canEditImage($image, $user->user_id))
+    if(!$image = self::canEditImage($image, auth()->user()->user_id))
         return API::responseApi($not_found_access_denied);
 
     $path = "albums/$image->u_id";
