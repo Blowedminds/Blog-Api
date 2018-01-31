@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\MainApi as API;
 use App\Http\Controllers\Api\AuthApi;
 
-class EditorRequestController extends Controller
+class EditorController extends Controller
 {
 
   public function __construct()

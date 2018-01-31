@@ -2,15 +2,15 @@
 
 Route::group(['prefix' => '{locale}'], function() {
 
-  Route::get('menus', 'ReaderRequestController@getMenus');
+  Route::get('menus', 'ReaderController@getMenus');
 
-  Route::get('home-data', 'ReaderRequestController@getHomeData');
+  Route::get('home-data', 'ReaderController@getHomeData');
 
-  Route::get('languages', 'ReaderRequestController@getLanguages');
+  Route::get('languages', 'ReaderController@getLanguages');
 
-  Route::get('about-me', 'ReaderRequestController@getAboutMe');
+  Route::get('about-me', 'ReaderController@getAboutMe');
 
-  Route::get('categories', 'ReaderRequestController@getCategories');
+  Route::get('categories', 'ReaderController@getCategories');
 
   Route::group(['prefix' => 'article'], function() {
 

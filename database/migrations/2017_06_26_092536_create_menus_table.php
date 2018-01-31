@@ -19,7 +19,7 @@ class CreateMenusTable extends Migration
             $table->string('url');
             $table->string('tooltip');
             $table->integer('weight');
-            $table->integer('parent');
+            $table->unsignedInteger('parent');
             $table->softDeletes();
             $table->timestamps();
         });

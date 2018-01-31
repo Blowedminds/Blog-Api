@@ -18,9 +18,9 @@ class CreateImagesTable extends Migration
             $table->string('u_id', 45)->unique();
             $table->string('hash');
             $table->string('name', 45);
-            $table->integer('size');
-            $table->integer('width');
-            $table->integer('height');
+            $table->unsignedInteger('size');
+            $table->unsignedInteger('width');
+            $table->unsignedInteger('height');
             $table->string('type', 45);
             $table->string('alt', 255);
             $table->string('owner', 172);

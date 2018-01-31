@@ -16,7 +16,7 @@ class CreateUserDatasTable extends Migration
         Schema::create('user_datas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id', 45);
-            $table->integer('role_id');
+            $table->unsignedInteger('role_id');
             $table->string('profile_image', 45);
             $table->text('biography');
             $table->softDeletes();

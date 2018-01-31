@@ -9,3 +9,4 @@ artisan_serve.bat
 *.txt
 /public/images
 *.sh
+_ide_helper.php

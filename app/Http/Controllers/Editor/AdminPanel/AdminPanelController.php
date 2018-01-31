@@ -10,7 +10,7 @@ use App\Language;
 use App\Role;
 use App\MenuRole;
 
-class AdminPanelRequestController extends Controller
+class AdminPanelController extends Controller
 {
 
   public function __construct()

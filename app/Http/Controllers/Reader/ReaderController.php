@@ -17,7 +17,7 @@ use App\Article;
 use App\Language;
 use App\Image;
 
-class ReaderRequestController extends Controller
+class ReaderController extends Controller
 {
     public function __construct()
     {

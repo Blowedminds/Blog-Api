@@ -1,10 +1,10 @@
 <?php
-namespace App\Http\Controllers\Editor\Auth;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class AuthRequestController extends Controller
+class AuthController extends Controller
 {
   public function __construct()
   {

@@ -18,7 +18,7 @@ class CreateArticlesTable extends Migration
             $table->string('slug', 191)->unique();
             $table->string('author_id');
             $table->string('image', 255);
-            $table->integer('views')->default(0);
+            $table->unsignedInteger('views')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

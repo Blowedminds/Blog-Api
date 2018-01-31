@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Image;
 use ImageFactory;
 
-class ImageRequestController extends Controller
+class ImageController extends Controller
 {
   public function __construct()
   {

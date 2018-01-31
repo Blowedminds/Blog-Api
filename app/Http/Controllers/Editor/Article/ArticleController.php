@@ -19,7 +19,7 @@ use App\UserData;
 use App\User;
 use App\Role;
 
-class ArticleRequestController extends Controller
+class ArticleController extends Controller
 {
 
   protected $messages = [
@@ -100,7 +100,7 @@ class ArticleRequestController extends Controller
       'body' => 'required',
       'keywords' => 'required',
       'published' => 'required',
-      'language' => 'required',
+      'language_id' => 'required',
       'category' => 'required',
       'image' => 'required',
       'slug' => 'required'
@@ -126,7 +126,7 @@ class ArticleRequestController extends Controller
     $article_language = ArticleContent::create([
       'article_id' => $article->id,
       'title' => $request->input('title'),
-      'language' => $request->input('language'),
+      'language_id' => $request->input('language_id'),
       'body' => $request->input('body'),
       'sub_title' => $request->input('sub_title'),
       'keywords' => $request->input('keywords'),

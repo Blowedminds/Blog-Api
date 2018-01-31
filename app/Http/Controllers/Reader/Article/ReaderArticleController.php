@@ -92,10 +92,6 @@ class ReaderArticleController extends Controller
 
     public function getLatests()
     {
-      $response = [
-        'header' => 'Hata', 'message' => 'Bu dil desteklenmemektedir', 'state' => 'error', 'pop_up' => false, 'redirect_link' => '/'
-      ];
-
       return response()->json(PublicApi::getLatest($this->language->id), 200);
     }
 

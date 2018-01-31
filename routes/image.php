@@ -1,15 +1,15 @@
 <?php
 
-Route::get('images', 'ImageRequestController@getImages');
+Route::get('images', 'ImageController@getImages');
 
-Route::get('image/{image}', 'ImageRequestController@getImage');
+Route::get('image/{image}', 'ImageController@getImage');
 
-Route::post('image', 'ImageRequestController@postImage');
+Route::post('image', 'ImageController@postImage');
 
-Route::get('edit/{image}', 'ImageRequestController@getEdit');
+Route::get('edit/{image}', 'ImageController@getEdit');
 
-Route::put('edit/{image}', 'ImageRequestController@putEdit');
+Route::put('edit/{image}', 'ImageController@putEdit');
 
-Route::delete('image/{image}', 'ImageRequestController@deleteImage');
+Route::delete('image/{image}', 'ImageController@deleteImage');
 
-Route::get('thumb/{image}', 'ImageRequestController@getThumb');
+Route::get('thumb/{image}', 'ImageController@getThumb');

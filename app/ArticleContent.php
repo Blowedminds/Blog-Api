@@ -19,7 +19,7 @@ class ArticleContent extends Model
     protected $casts = [ 'id' => 'integer', 'article_id' => 'integer', 'language_id' => 'integer', 'published' => 'integer', 'situation' => 'integer', 'version' => 'integer' ];
 
     protected $fillable = [
-      'article_id', 'title', 'language', 'body', 'sub_title', 'keywords', 'published', 'situation', 'version'
+      'article_id', 'title', 'language_id', 'body', 'sub_title', 'keywords', 'published', 'situation', 'version'
     ];
 
     protected $hidden = [

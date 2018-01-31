@@ -15,7 +15,8 @@ return [
     'supportsCredentials' => false,
     'allowedOrigins' => [
         env('APP_PUBLIC_URL', 'http://localhost'),
-        env('APP_ADMIN_URL', 'http://localhost')
+        env('APP_ADMIN_URL', 'http://localhost'),
+        env('APP_DISCUSS_URL', 'http://localhost')
     ],
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['Content-Type', 'x-xsrf-token', 'X-Requested-With', 'enctype'],

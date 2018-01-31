@@ -61,11 +61,6 @@ class Article extends Model
       return $this->hasMany('App\ArticleContent');
     }
 
-    public function languageContent()
-    {
-        return $this->hasOne('App\ArticleContent');
-    }
-
     public function author()
     {
       return $this->belongsTo('App\User', 'author_id', 'user_id');
@@ -91,4 +86,25 @@ class Article extends Model
       return $this->hasMany('App\ArticleContent', 'article_id', 'id')->onlyTrashed();
     }
 
+    public function room()
+    {
+        return $this->hasOne('App\ArticleRoom');
+    }
+
+    public function scopeLanguageContent($query, $language_id)
+    {
+        //return $query->whereHas('');
+    }
+
+    public function scopeSlug($query, $slug)
+    {
+        return $query->where('slug', $slug);
+    }
+
+    public function scopeWithRoomAndMessages($query)
+    {
+        return $query->with(['room' => function($q) {
+            $q->withMessages();
+        }]);
+    }
 }
