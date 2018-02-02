@@ -16,4 +16,14 @@ class RoomMessage extends Model
     protected $hidden = [
 
     ];
+
+    public function room()
+    {
+        return $this->hasOne('App\ArticleRoom', 'id', 'room_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne('App\User', 'user_id', 'user_id');
+    }
 }

@@ -17,6 +17,11 @@ class ArticleRoom extends Model
 
     ];
 
+    public function article()
+    {
+        return $this->hasOne('App\Article', 'id', 'article_id');
+    }
+
     public function messages()
     {
         return $this->hasMany('App\RoomMessage', 'room_id');

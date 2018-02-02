@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Discuss;
 
 use App\Article;
+use App\Events\NewMessageEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -33,11 +34,13 @@ class RoomController extends Controller
     {
         $article = Article::slug($article_slug)->with('room')->first();
 
-        $article->room->messages()->create([
+        $message = $article->room->messages()->create([
             'room_id' => $article->room->id,
             'user_id' => auth()->user()->user_id,
             'message' => request()->input('message')
         ]);
+
+        event(new NewMessageEvent($message));
 
         return response()->json([
             'header' => 'Successful',
