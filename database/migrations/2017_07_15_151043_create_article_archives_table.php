@@ -18,7 +18,7 @@ class CreateArticleArchivesTable extends Migration
             $table->unsignedInteger('article_id');
             $table->string('sub_title', 255);
             $table->string('title', 255);
-            $table->unsignedInteger('language');
+            $table->unsignedInteger('language_id');
             $table->longtext('body');
             $table->text('keywords');
             $table->unsignedInteger('published');
