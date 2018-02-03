@@ -29,6 +29,8 @@ class ArticleRoom extends Model
 
     public function scopeWithMessages($query)
     {
-        return $query->with('messages');
+        return $query->with(['messages' => function($q) {
+            $q->withUser();
+        }]);
     }
 }

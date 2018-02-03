@@ -26,4 +26,11 @@ class RoomMessage extends Model
     {
         return $this->hasOne('App\User', 'user_id', 'user_id');
     }
+
+    public function scopeWithUser($query)
+    {
+        return $query->with(['user' => function($q) {
+            $q->select('user_id', 'name');
+        }]);
+    }
 }

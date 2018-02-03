@@ -25,9 +25,9 @@ class RoomController extends Controller
 
     public function getMessages($article_slug)
     {
-        $article = Article::slug($article_slug)->withRoomAndMessages()->first();
+        $messages = Article::slug($article_slug)->withRoomAndMessages()->first();
 
-        return response()->json($article, 200);
+        return response()->json($messages, 200);
     }
 
     public function putMessage($article_slug)

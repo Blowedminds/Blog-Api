@@ -83,10 +83,7 @@ class AuthController extends Controller
 
   public function checkAuth()
   {
-    if (!$this->_checkAuth())
-      return response()->json(false, 200);
-
-    return response()->json(true, 200);
+      return response()->json( (bool) auth()->user(), 200);
   }
 
   private static function _login($credentials)
@@ -102,12 +99,5 @@ class AuthController extends Controller
     }
 
     return ['data' => ['token' => $token], 'status' => 200];
-  }
-
-  private function _checkAuth()
-  {
-    //if (!AuthApi::authUser()) return false;
-
-    return false;
   }
 }

@@ -48,7 +48,10 @@ class NewMessageEvent implements ShouldBroadcastNow
             'message' => $this->room_message->message,
             'slug' => $this->room_message->room->article->slug,
             'user_id' => $this->room_message->user->user_id,
-            'user_name' => $this->room_message->user->name
+            'user' => [
+                'name' => $this->room_message->user->name,
+                'user_id' => $this->room_message->user->user_id
+            ]
         ];
     }
 }
