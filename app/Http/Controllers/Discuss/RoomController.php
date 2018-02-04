@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Discuss;
 
 use App\Article;
 use App\Events\NewMessageEvent;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -25,9 +26,30 @@ class RoomController extends Controller
 
     public function getMessages($article_slug)
     {
-        $messages = Article::slug($article_slug)->withRoomAndMessages()->first();
+        $article_messages = Article::slug($article_slug)->withRoomAndMessages()->with(['contents' => function($q){
+            $q->where('language_id', 2)->select('article_id', 'sub_title', 'title', 'language_id');
+        }])->first();
 
-        return response()->json($messages, 200);
+        $previous_user = null;
+        $index = -1;
+
+        $mapped_messages = $article_messages->room->messages->reduce( function ($carry, $message) use(&$previous_user, &$index) {
+
+            if($previous_user != $message->user_id){
+                $previous_user = $message->user_id;
+                $index++;
+            }
+
+            $carry[$index][] = $message;
+
+            return $carry;
+        }, []);
+
+        $article_messages = $article_messages->toArray();
+
+        $article_messages['room']['messages'] = $mapped_messages;
+
+        return response()->json($article_messages, 200);
     }
 
     public function putMessage($article_slug)
