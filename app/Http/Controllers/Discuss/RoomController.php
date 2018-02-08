@@ -19,7 +19,13 @@ class RoomController extends Controller
 
     public function getRooms()
     {
-        $articles = Article::select('id', 'slug', 'author_id', 'image', 'views')->paginate(10);
+        $articles = Article::select('id', 'slug', 'author_id', 'image', 'views')
+            ->whereHas('contents', function($q) {
+                $q->where('language_id', 2);
+            })
+            ->with(['contents' => function($q) {
+            $q->select('article_id', 'title')->where('language_id', 2); /*This must be refactored*/
+        }])->paginate(10);
 
         return response()->json($articles, 200);
     }

@@ -27,7 +27,7 @@ class ArticleRoom extends Model
         return $this->hasMany('App\RoomMessage', 'room_id');
     }
 
-    public function scopeWithMessages($query)
+    public function scopeWithMessagesAndUser($query)
     {
         return $query->with(['messages' => function($q) {
             $q->withUser();

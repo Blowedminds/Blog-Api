@@ -104,7 +104,7 @@ class Article extends Model
     public function scopeWithRoomAndMessages($query)
     {
         return $query->with(['room' => function($q) {
-            $q->withMessages();
+            $q->withMessagesAndUser();
         }]);
     }
 }
