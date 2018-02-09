@@ -33,4 +33,9 @@ class RoomMessage extends Model
             $q->select('user_id', 'name');
         }]);
     }
+
+    public function scopeUserMessage($query, $message_id, $user_id)
+    {
+        return $query->where('id', $message_id)->where('user_id', $user_id);
+    }
 }

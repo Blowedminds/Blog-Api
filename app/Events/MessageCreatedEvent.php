@@ -5,13 +5,11 @@ namespace App\Events;
 use App\RoomMessage;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class NewMessageEvent implements ShouldBroadcastNow
+class MessageCreatedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -39,15 +37,17 @@ class NewMessageEvent implements ShouldBroadcastNow
 
     public function broadcastAs()
     {
-        return 'new_message.created';
+        return 'message.created';
     }
 
     public function broadcastWith()
     {
         return [
+            'id' => $this->room_message->id,
             'message' => $this->room_message->message,
             'slug' => $this->room_message->room->article->slug,
             'user_id' => $this->room_message->user->user_id,
+            'created_at' => $this->room_message->created_at->toDateTimeString(),
             'user' => [
                 'name' => $this->room_message->user->name,
                 'user_id' => $this->room_message->user->user_id

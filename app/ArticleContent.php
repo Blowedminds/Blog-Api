@@ -30,4 +30,9 @@ class ArticleContent extends Model
     {
       return $this->belongsTo('App\Article');
     }
+
+    public function scopePublished($query)
+    {
+        return $query->where('published', 1);
+    }
 }
