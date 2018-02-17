@@ -35,7 +35,7 @@ class MessageDeletedEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel($this->slug);
+        return new Channel( 'article.' . $this->slug);
     }
 
     public function broadcastAs()

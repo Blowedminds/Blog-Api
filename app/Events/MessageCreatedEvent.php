@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\RoomMessage;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -32,7 +33,7 @@ class MessageCreatedEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel($this->room_message->room->article->slug);
+        return new Channel( 'article.' . $this->room_message->room->article->slug);
     }
 
     public function broadcastAs()

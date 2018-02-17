@@ -66,15 +66,12 @@ class RoomController extends Controller
            'message' => 'required'
         ]);
 
-        $article = Article::slug($article_slug)->with('room')->first();
+        $message = Article::slug($article_slug)
+                            ->with('room')
+                            ->first()
+                            ->createMessage(request()->input('message'));
 
-        $message = $article->room->messages()->create([
-            'room_id' => $article->room->id,
-            'user_id' => auth()->user()->user_id,
-            'message' => request()->input('message')
-        ]);
-
-        event(new MessageCreatedEvent($message));
+        broadcast(new MessageCreatedEvent($message));
 
         return response()->json([
             'header' => 'Successful',
@@ -108,7 +105,7 @@ class RoomController extends Controller
                                 ->with(['room' => function($q) { $q->with('article');}])
                                 ->firstOrFail();
 
-        event(new MessageDeletedEvent($message->id, $message->room->article->slug));
+        broadcast(new MessageDeletedEvent($message->id, $message->room->article->slug));
 
         $message->forceDelete();
 

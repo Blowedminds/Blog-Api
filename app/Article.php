@@ -91,6 +91,17 @@ class Article extends Model
         return $this->hasOne('App\ArticleRoom');
     }
 
+    public function createMessage($message)
+    {
+        $new_message = $this->room->messages()->create([
+            'room_id' => $this->room->id,
+            'user_id' => auth()->user()->user_id,
+            'message' => $message
+        ]);
+
+        return $new_message;
+    }
+
     public function scopeLanguageContent($query, $language_id)
     {
         //return $query->whereHas('');
