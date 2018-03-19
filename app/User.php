@@ -113,4 +113,9 @@ class User extends Authenticatable implements JWTSubject
 
       return $menus;
     }
+
+    public function getRoleAttribute()
+    {
+        return $this->roles[0];
+    }
 }

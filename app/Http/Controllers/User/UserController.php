@@ -13,151 +13,135 @@ use App\Exceptions\InvalidInputException;
 
 class UserController extends Controller
 {
-  public function __construct()
-  {
-    $this->middleware('auth:api');
-  }
-
-  public function getUserInfo()
-  {
-    $user = AuthApi::authUser();
-
-    return response()->json([
-              'name' => $user->name,
-              'user_id' => $user->user_id,
-              'role_id' => $user->roles[0]->id
-            ]);
-  }
-
-  public function getUserProfile()
-  {
-    $user = AuthApi::authUser();
-
-    $user_data = $user->userData;
-
-    $user_bio = json_decode($user_data->biography);
-
-    $data['bio'] = Language::all('slug')->map( function($language) use($user_bio) {
-
-        if($user_bio){
-            $key = array_search($language->slug, array_column($user_bio, 'slug'));
-        }
-        else{
-            $key = false;
-        }
-
-        return [
-            'slug' => $language->slug,
-            'bio' => $key !== false ? $user_bio[$key]->bio : null
-        ];
-    });
-
-    $role = $user->roles()->first();
-
-    $data['profile_image'] = $user_data->profile_image;
-
-    $data['name'] = $user->name;
-
-    $data['user_id'] = $user->user_id;
-
-    $data['role_id'] = $role->id;
-
-    $data['role_name'] = $role->role_name;
-
-    return response()->json($data);
-  }
-
-  public function postUserProfile(Request $request)
-  {
-    $this->validate($request, [
-      'name' => 'required',
-      'bio' => 'required'
-    ]);
-
-    if($this->isValidBio($request->input('bio'))){
-        throw new InvalidInputException;
+    public function __construct()
+    {
+        $this->middleware(['auth:api']);
     }
 
-    $user = AuthApi::authUser();
+    public function getUserInfo()
+    {
+        $user = auth()->user();
 
-    $user->name = $request->input('name');
+        return response()->json([
+            'name' => $user->name,
+            'user_id' => $user->user_id,
+            'role_id' => $user->roles[0]->id
+        ]);
+    }
 
-    $user_data = $user->userData;
+    public function getUserProfile()
+    {
+        $user = auth()->user();
 
-    $user_data->biography = json_encode($request->input('bio'));
+        $user_data = $user->userData;
 
-    $user_data->save();
+        $user_bio = json_decode($user_data->biography);
 
-    $user->save();
+        $data['bio'] = Language::all('slug')->map(function ($language) use ($user_bio) {
 
-    return response()->json(['Tebrikler'], 200);
-  }
+            if ($user_bio) {
+                $key = array_search($language->slug, array_column($user_bio, 'slug'));
+            } else {
+                $key = false;
+            }
 
-  public function postUserProfileImage(Request $request)
-  {
-    $this->validate($request, [
-      'file' => 'required|image|max:33554432',
-    ]);
+            return [
+                'slug' => $language->slug,
+                'bio' => $key !== false ? $user_bio[$key]->bio : null
+            ];
+        });
 
-    if (!$request->hasFile('file') && !$file->isValid())
-      return API::responseApi([
-        'header' => 'Dosya Hatası', 'message' => 'Dosyayı alamadık', 'state' => 'error'
-      ]);
+        $role = $user->roles()->first();
 
-    $user = AuthApi::authUser();
+        $data['profile_image'] = $user_data->profile_image;
 
-    $user_data = $user->userData;
+        $data['name'] = $user->name;
 
-    $file = $request->file('file');
+        $data['user_id'] = $user->user_id;
 
-    $extension = $file->extension();
+        $data['role_id'] = $role->id;
 
-    $u_id = uniqid('img_');
+        $data['role_name'] = $role->role_name;
 
-    $store_name = $u_id.".".$extension;
+        return response()->json($data);
+    }
 
-    File::delete("images/author/".$user_data->profile_image);
+    public function postUserProfile(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'bio' => 'required'
+        ]);
 
-    $user_data->profile_image = $store_name;
+        if ($this->isValidBio($request->input('bio'))) {
+            throw new InvalidInputException;
+        }
 
-    $user_data->save();
+        $user = auth()->user();
 
-    $path = rtrim(app()->basePath('public/'."images/author"), '/');
+        $user->name = $request->input('name');
 
-    $request->file('file')->move($path, $store_name);
+        $user_data = $user->userData;
 
-    return response()->json(['TEBRIKLER'], 200);
-  }
+        $user_data->biography = json_encode($request->input('bio'));
 
-  public function getMenus(Request $request)
-  {
-    $user = AuthApi::authUser();
+        $user_data->save();
 
-    $menus = $user->roles[0]->menus->map( function($menu) {
-      return [
-        'name' => $menu->name,
-        'tooltip' => $menu->tooltip,
-        'url' => $menu->url,
-        'weight' => $menu->weight
-      ];
-    })->toArray();
+        $user->save();
 
-    //$data = array_unique($data, SORT_REGULAR);
+        return response()->json(['Tebrikler'], 200);
+    }
 
-    usort($menus, function($a, $b) {
-        return $b['weight'] - $a['weight'];
-    });
+    public function postUserProfileImage()
+    {
+        request()->validate([
+            'file' => 'required|image|max:33554432',
+        ]);
 
-    return response()->json($menus, 200);
-  }
+        $user_data = auth()->user()->userData;
 
-  private function isValidBio($bio)
-  {
-      $is_valid = Language::all('slug')->reduce(function($carry, $language) use($bio){
+        $file = request()->file('file');
 
-          return $carry && ($bio[$language->slug] ?? null);
-      }, true);
+        $extension = $file->extension();
 
-      return (bool) $is_valid;
-  }
+        $u_id = uniqid('img_');
+
+        $store_name = $u_id . "." . $extension;
+
+        File::delete("images/author/" . $user_data->profile_image);
+
+        $user_data->profile_image = $store_name;
+
+        $user_data->save();
+
+        $path = rtrim(app()->basePath('public/' . "images/author"), '/');
+
+        request()->file('file')->move($path, $store_name);
+
+        return response()->json(['TEBRIKLER'], 200);
+    }
+
+    public function getMenus($language_slug)
+    {
+        $menus = auth()->user()->role->menus()->orderBy('weight', 'DESC')->get()->map(function ($menu) use ($language_slug) {
+            return [
+                'name' => json_decode($menu->name, true)[$language_slug],
+                'tooltip' => json_decode($menu->tooltip, true)[$language_slug],
+                'url' => $menu->url,
+                'weight' => $menu->weight
+            ];
+        })->toArray();
+
+        return response()->json($menus, 200);
+    }
+
+    private function isValidBio($bio)
+    {
+        $is_valid = Language::all('slug')->reduce(function ($carry, $language) use ($bio) {
+
+            return $carry && ($bio[$language->slug] ?? null);
+        }, true);
+
+        return (bool)$is_valid;
+    }
 }
