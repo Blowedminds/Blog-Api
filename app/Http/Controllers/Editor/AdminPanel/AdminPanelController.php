@@ -127,22 +127,21 @@ class AdminPanelController extends Controller
     return response()->json(['TEBRIKLER'], 200);
   }
 
-  public function postCategory(Request $request)
+  public function postCategory($category_id)
   {
-    $this->validate($request, [
-      'id' => 'required',
+    request()->validate([
       'name' => 'required',
       'description' => 'required',
       'slug' => 'required'
     ]);
 
-    if(!$category = Category::find(intval($request->input('id')))) return;
+    $category = Category::findOrFail($category_id);
 
-    $category->name = $request->input('name');
+    $category->name = request()->input('name');
 
-    $category->description = $request->input('description');
+    $category->description = request()->input('description');
 
-    $category->slug = $request->input('slug');
+    $category->slug = request()->input('slug');
 
     $category->save();
 

@@ -15,4 +15,29 @@ class ArticleObserver
             'article_id' => $article->id,
         ]);
     }
+
+    public function restoring(Article $article)
+    {
+        $article->trashed_contents()->restore();
+
+        $article->trashed_categories()->restore();
+    }
+
+    public function deleting(Article $article)
+    {
+        $article->contents()->delete();
+
+        $article->article_categories()->delete();
+    }
+
+    public function forceDeleted(Article $article)
+    {
+        $article->trashed_contents()->forceDelete();
+
+        $article->trashed_categories()->forceDelete();
+
+        $article->olds()->forceDelete();
+
+        $article->permissions()->delete();
+    }
 }

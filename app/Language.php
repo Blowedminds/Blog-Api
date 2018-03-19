@@ -26,5 +26,8 @@ class Language extends Model
 
     ];
 
-
+    public function scopeSlug($query, $slug)
+    {
+        return $query->where('slug', $slug);
+    }
 }

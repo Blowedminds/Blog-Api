@@ -1,57 +1,58 @@
 <?php
 
-Route::get('global-data', 'EditorController@getGlobalData');
+Route::get('articles', 'Article\ArticleController@getArticles');
 
-Route::group(['prefix' => 'article'], function() {
+Route::get('trashed-articles', 'Article\ArticleController@getTrashedArticles');
 
-  Route::get('articles', 'Article\ArticleController@getArticles');
+Route::group(['prefix' => 'article'], function () {
 
-  Route::get('properties', 'Article\ArticleController@getProperties');
+    Route::put('', 'Article\ArticleController@putArticle');
 
-  Route::post('article', 'Article\ArticleController@postArticle');
+    Route::post('restore/{article_id}', 'Article\ArticleController@postRestore');
 
-  Route::post('content', 'Article\ArticleController@postContent');
+    Route::get('{article_slug}', 'Article\ArticleController@getArticle');
 
-  Route::put('content', 'Article\ArticleController@putContent');
+    Route::post('{article_id}', 'Article\ArticleController@postArticle');
 
-  Route::put('article', 'Article\ArticleController@putArticle');
+    Route::delete('{article_id}', 'Article\ArticleController@deleteArticle');
 
-  Route::delete('article/{article_id}', 'Article\ArticleController@deleteArticle');
+    Route::get('content/{article_slug}/{language_slug}', 'Article\ArticleController@getArticleContent');
 
-  Route::get('trash', 'Article\ArticleController@getTrash');
+    //TODO: Convert this also to content/article_id/language_slug
+    Route::post('content/{article_id}', 'Article\ArticleController@postArticleContent');
 
-  Route::post('restore', 'Article\ArticleController@postRestore');
+    Route::put('content/{article_id}', 'Article\ArticleController@putArticleContent');
 
-  Route::post('force-delete', 'Article\ArticleController@postForceDelete');
+    Route::delete('force-delete/{article_id}', 'Article\ArticleController@deleteForceDelete');
 
-  Route::get('permission/{article_id}', 'Article\ArticleController@getPermission');
+    Route::get('permission/{article_id}', 'Article\ArticleController@getPermission');
 
-  Route::put('permission/{article_id}', 'Article\ArticleController@putPermission');
+    Route::put('permission/{article_id}', 'Article\ArticleController@putPermission');
 });
 
-Route::group(['prefix' => 'panel'], function() {
+Route::group(['prefix' => 'panel'], function () {
 
-  Route::get('menus', 'AdminPanel\AdminPanelController@getMenus');
+    Route::get('menus', 'AdminPanel\AdminPanelController@getMenus');
 
-  Route::post('menus', 'AdminPanel\AdminPanelController@postMenu');
+    Route::post('menus', 'AdminPanel\AdminPanelController@postMenu');
 
-  Route::put('menus', 'AdminPanel\AdminPanelController@putMenu');
+    Route::put('menus', 'AdminPanel\AdminPanelController@putMenu');
 
-  Route::delete('menus/{id}', 'AdminPanel\AdminPanelController@deleteMenu');
+    Route::delete('menus/{id}', 'AdminPanel\AdminPanelController@deleteMenu');
 
-  Route::get('categories', 'AdminPanel\AdminPanelController@getCategories');
+    Route::get('categories', 'AdminPanel\AdminPanelController@getCategories');
 
-  Route::post('categories', 'AdminPanel\AdminPanelController@postCategory');
+    Route::post('categories/{category_id}', 'AdminPanel\AdminPanelController@postCategory');
 
-  Route::put('categories', 'AdminPanel\AdminPanelController@putCategory');
+    Route::put('categories', 'AdminPanel\AdminPanelController@putCategory');
 
-  Route::delete('categories/{id}', 'AdminPanel\AdminPanelController@deleteCategory');
+    Route::delete('categories/{id}', 'AdminPanel\AdminPanelController@deleteCategory');
 
-  Route::get('languages', 'AdminPanel\AdminPanelController@getLanguages');
+    Route::get('languages', 'AdminPanel\AdminPanelController@getLanguages');
 
-  Route::post('languages', 'AdminPanel\AdminPanelController@postLanguage');
+    Route::post('languages', 'AdminPanel\AdminPanelController@postLanguage');
 
-  Route::put('languages', 'AdminPanel\AdminPanelController@putLanguage');
+    Route::put('languages', 'AdminPanel\AdminPanelController@putLanguage');
 
-  Route::delete('languages/{id}', 'AdminPanel\AdminPanelController@deleteLanguage');
+    Route::delete('languages/{id}', 'AdminPanel\AdminPanelController@deleteLanguage');
 });

@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Reader\Article;
 
+use App\Language;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\Api\MainApi as API;
 use App\Http\Controllers\Api\PublicApi;
 
 
 use App\Article;
-use App\Category;
 
 class ReaderArticleController extends Controller
 {
@@ -18,7 +17,7 @@ class ReaderArticleController extends Controller
 
     public function __construct()
     {
-        $this->language = API::getLanguage();
+        $this->language = Language::all();
     }
 
     public function getArticleSingle($language, $slug)
@@ -35,11 +34,11 @@ class ReaderArticleController extends Controller
         $query->where('language_id', $this->language->id)->where('published', 1);
       }, 'categories', 'author'])->first())
 
-        return API::responseApi($response);
+        return response()->json($response, 422);
 
       if (!isset($article->contents[0]))
 
-        return API::responseApi($response);
+        return response()->json($response, 422);
 
       $temp_categories = [];
 
@@ -70,7 +69,7 @@ class ReaderArticleController extends Controller
       $data['author']['profile_image'] = $article->author->userData->profile_image;
       $data['author']['bio'] = "";
 
-      $bio = json_decode($article->author->userData->biography ?? []);
+      $bio = json_decode($article->author->userData->biography ?? '');
 
       if($bio){
           $key = array_search( $this->language->slug, array_column($bio, 'slug'));

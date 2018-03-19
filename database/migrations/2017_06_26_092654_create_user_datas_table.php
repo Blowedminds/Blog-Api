@@ -17,8 +17,8 @@ class CreateUserDatasTable extends Migration
             $table->increments('id');
             $table->string('user_id', 45);
             $table->unsignedInteger('role_id');
-            $table->string('profile_image', 45);
-            $table->text('biography');
+            $table->string('profile_image', 45)->nullable();
+            $table->text('biography')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

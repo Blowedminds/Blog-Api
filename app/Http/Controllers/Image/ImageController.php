@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Image;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\Api\MainApi as API;
-use App\Http\Controllers\Api\AuthApi;
 use App\Http\Controllers\Api\ImageApi;
 
 use Illuminate\Support\Facades\Storage;
@@ -29,10 +27,10 @@ class ImageController extends Controller
       'alt' => 'required'
     ]);
 
-    $user = AuthApi::authUser();
+    $user = auth()->user();
 
     if (!$request->hasFile('file') && !$request->file('file')->isValid())
-      return API::responseApi([
+      return response()->json([
         'header' => 'Dosya Hatası', 'message' => 'Dosyayı alamadık', 'state' => 'error'
       ]);
 
@@ -56,7 +54,7 @@ class ImageController extends Controller
 
     /*Check if file already exists*/
     if (Storage::disk('local')->exists($path.$store_name) && $temp = Image::where('u_id', $u_id)->first())
-      return API::responseApi([
+      return response()->json([
         'header' => 'Dosya Hatası', 'message' => 'Dosya oluştururken bir hata oluştu', 'state' => 'error'
       ]);
 
@@ -94,7 +92,7 @@ class ImageController extends Controller
       'public' => ($request->input('public')) ? 1 : 0
     ]);
 
-    return API::responseApi([
+    return response()->json([
       'header' => 'İşlem Başarılı', 'message' => 'Fotoğrafı albüme kaydettik', 'state' => 'success'
     ], 200);
   }
@@ -129,7 +127,7 @@ class ImageController extends Controller
     $not_found_response = ['header' => 'Hata', 'message' => 'Fotoğrafı bulamadık', 'state' => 'error'];
 
     if(!$image = ImageApi::isAccessible($image))
-      return API::responseApi($not_found_response, 404);
+      return response()->json($not_found_response, 404);
 
     return ImageApi::file(storage_path('/app/albums/'.$image->u_id.'/thumb_'.$image->u_id.".".$image->type),
                           ['Content-Type' => "image/$image->type"]
@@ -141,7 +139,7 @@ class ImageController extends Controller
     $not_found_response = ['header' => 'Hata', 'message' => 'Fotoğrafı bulamadık', 'state' => 'error'];
 
     if(!$image = ImageApi::isAccessible($image))
-      return API::responseApi($not_found_response, 404);
+      return response()->json($not_found_response, 404);
 
     return ImageApi::file(storage_path('/app/albums/'.$image->u_id.'/'.$image->u_id.".".$image->type),
                             ['Content-Type' => "image/$image->type"]
@@ -151,7 +149,7 @@ class ImageController extends Controller
   public function getEdit($image)
   {
     if(!$image = self::canEditImage($image, auth()->user()->user_id))
-        return API::responseApi([
+        return response()->json([
           'header' => 'Hata', 'message' => 'Aradığınız albüm yok, veya erişim hakkınız yok'
         ]);
 
@@ -169,7 +167,7 @@ class ImageController extends Controller
 
   public function putEdit($image, Request $request)
   {
-    $user = AuthApi::authUser();
+    $user = auth()->user();
 
     $this->validate($request, [
       'u_id' => 'required',
@@ -180,13 +178,13 @@ class ImageController extends Controller
     ]);
 
     if ($request->input('u_id') != $image)
-      return API::responseApi([
+      return response()->json([
               'header' => 'Hata', 'message' => 'U_ID != IMAGE_URL', 'state' => 'error'
             ]);
 
 
     if(!$image = self::canEditImage($image, $user->user_id))
-      return API::responseApi([
+      return response()->json([
               'header' => 'Hata', 'message' => 'Aradığınız albüm yok, veya erişim hakkınız yok', 'state' => 'error'
             ]);
 
@@ -268,7 +266,7 @@ class ImageController extends Controller
       $image->save();
     }
 
-    return API::responseApi([
+    return response()->json([
             'header' => 'İşlem Başarılı', 'message' => 'Fotoğraf başarı ile düzenlendi', 'state' => 'success'
           ], 200);
   }
@@ -278,7 +276,7 @@ class ImageController extends Controller
     $not_found_access_denied = ['header' => 'Hata', 'message' => 'Aradığınız albüm ya yok yada erişemiyorsunuz', 'state' => 'error'];
 
     if(!$image = self::canEditImage($image, auth()->user()->user_id))
-        return API::responseApi($not_found_access_denied);
+        return response()->json($not_found_access_denied);
 
     $path = "albums/$image->u_id";
 
@@ -286,7 +284,7 @@ class ImageController extends Controller
 
     $image->forceDelete();
 
-    return API::responseApi([
+    return response()->json([
       'header' => 'İşlem Başarılı', 'message' => 'Dosyalar başarı ile silindi!', 'state' => 'success'
     ], 200);
 

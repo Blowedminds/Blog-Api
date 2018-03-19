@@ -51,14 +51,19 @@ class Article extends Model
       return $this->belongsToMany('App\User', 'article_permissions', 'article_id', 'user_id');
     }
 
-    public function share_users()
+    public function permissions()
     {
-      return $this->hasMany('App\ArticlePermission');
+        return $this->hasMany('App\ArticlePermission');
     }
 
     public function contents()
     {
       return $this->hasMany('App\ArticleContent');
+    }
+
+    public function content()
+    {
+        return $this->hasOne('App\ArticleContent');
     }
 
     public function author()
@@ -102,14 +107,41 @@ class Article extends Model
         return $new_message;
     }
 
-    public function scopeLanguageContent($query, $language_id)
+    public function scopeWhereHasContent($query, $language_id)
     {
-        //return $query->whereHas('');
+        return $query->whereHas('content', function ($query_content) use($language_id){
+            $query_content->where('language_id', $language_id);
+        });
+    }
+
+    public function scopeWithContent($query, $language_id)
+    {
+        return $query->with(['content' => function ($query_content) use($language_id){
+            $query_content->where('language_id', $language_id);
+        }]);
+    }
+    public function scopeWhereHasPublishedContent($query, $language_id, $published = 1)
+    {
+        return $query->whereHas('content', function ($query_content) use($language_id, $published){
+            $query_content->where('language_id', $language_id)->published($published);
+        });
+    }
+
+    public function scopeWithPublishedContent($query, $language_id, $published = 1)
+    {
+        return $query->with(['content' => function ($query_content) use($language_id, $published){
+            $query_content->where('language_id', $language_id)->published($published);
+        }]);
     }
 
     public function scopeSlug($query, $slug)
     {
         return $query->where('slug', $slug);
+    }
+
+    public function scopeWhereId($query, $id)
+    {
+        return $query->where('id', $id);
     }
 
     public function scopeWithRoomAndMessages($query)

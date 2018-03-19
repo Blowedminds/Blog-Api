@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
         switch ($exception) {
 
             case $exception instanceof AuthenticationException:
-                return MainApi::responseApi(['error' => 'Unauthenticated'], 401);
+                return response()->json(['error' => 'Unauthenticated'], 401);
                 break;
         }
 

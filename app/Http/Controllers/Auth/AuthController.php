@@ -81,7 +81,7 @@ class AuthController extends Controller
     return response()->json($login['data'], $login['status']);
   }
 
-  public function checkAuth()
+  public function isAuthenticated()
   {
       return response()->json( (bool) auth()->user(), 200);
   }
