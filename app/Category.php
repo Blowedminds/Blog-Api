@@ -41,4 +41,9 @@ class Category extends Model
     {
       return $this->hasManyThrough('App\ArticleContent', 'App\ArticleCategory', 'category_id', 'article_id', 'id', 'article_id');
     }
+
+    public function scopeSlug($query, $slug)
+    {
+        return $query->where('slug', $slug);
+    }
 }

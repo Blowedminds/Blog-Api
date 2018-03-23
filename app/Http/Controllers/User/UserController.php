@@ -31,61 +31,32 @@ class UserController extends Controller
 
     public function getUserProfile()
     {
-        $user = auth()->user();
 
-        $user_data = $user->userData;
+        $user = auth()->user()->with(['userData', 'roles'])->first()->toArray();
 
-        $user_bio = json_decode($user_data->biography);
+        $user['user_data']['biography'] = $this->localizeField(json_decode($user['user_data']['biography'], true));
 
-        $data['bio'] = Language::all('slug')->map(function ($language) use ($user_bio) {
+        $user['role'] = $user['roles'][0];
 
-            if ($user_bio) {
-                $key = array_search($language->slug, array_column($user_bio, 'slug'));
-            } else {
-                $key = false;
-            }
+        unset($user['roles']);
 
-            return [
-                'slug' => $language->slug,
-                'bio' => $key !== false ? $user_bio[$key]->bio : null
-            ];
-        });
-
-        $role = $user->roles()->first();
-
-        $data['profile_image'] = $user_data->profile_image;
-
-        $data['name'] = $user->name;
-
-        $data['user_id'] = $user->user_id;
-
-        $data['role_id'] = $role->id;
-
-        $data['role_name'] = $role->role_name;
-
-        return response()->json($data);
+        return response()->json($user);
     }
 
-    public function postUserProfile(Request $request)
+    public function postUserProfile()
     {
-        $this->validate($request, [
+        request()->validate([
             'name' => 'required',
-            'bio' => 'required'
+            'biography' => 'required'
         ]);
 
-        if ($this->isValidBio($request->input('bio'))) {
-            throw new InvalidInputException;
-        }
+        $user = auth()->user()->with(['userData'])->first();
 
-        $user = auth()->user();
+        $user->name = request()->input('name');
 
-        $user->name = $request->input('name');
+        $user->userData->biography = json_encode($this->localizeField(request()->input('biography')));
 
-        $user_data = $user->userData;
-
-        $user_data->biography = json_encode($request->input('bio'));
-
-        $user_data->save();
+        $user->userData->save();
 
         $user->save();
 
@@ -143,5 +114,13 @@ class UserController extends Controller
         }, true);
 
         return (bool)$is_valid;
+    }
+
+    private function localizeField($field)
+    {
+        foreach (Language::all() as $language)
+            $field[$language->slug] = $field[$language->slug] ?? '';
+
+        return $field;
     }
 }
