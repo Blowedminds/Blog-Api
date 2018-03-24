@@ -82,11 +82,13 @@ class ReaderArticleController extends Controller
 
     public function getArticlesBySearch($locale)
     {
+        $language_id = Language::slug($locale)->firstOrFail()->id;
+
         $query = request()->input('q');
 
-        $articles = Article::whereHas('contents', function ($q) use ($query) {
-            $q->where('title', 'like', '%' . $query . '%')->where('language_id', $this->language->id);
-        })->with('contents')->get();
+        $articles = Article::whereHasPublishedContent($language_id)->whereHas('contents', function ($q) use ($query, $language_id) {
+            $q->where('title', 'like', '%' . $query . '%');
+        })->withPublishedContent($language_id)->get();
 
         return response()->json($articles, 200);
     }

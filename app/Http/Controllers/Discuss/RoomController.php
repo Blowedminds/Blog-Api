@@ -34,14 +34,12 @@ class RoomController extends Controller
 
     public function getMessages($article_slug)
     {
-        $article_messages = Article::slug($article_slug)->withRoomAndMessages()->with(['contents' => function($q){
-            $q->where('language_id', 2)->select('article_id', 'sub_title', 'title', 'language_id');
-        }])->first();
+        $article = Article::slug($article_slug)->withRoomAndMessages()->whereHasPublishedContent(2)->withPublishedContent(2)->first();
 
         $previous_user = null;
         $index = -1;
 
-        $mapped_messages = $article_messages->room->messages->reduce( function ($carry, $message) use(&$previous_user, &$index) {
+        $mapped_messages = $article->room->messages->reduce( function ($carry, $message) use(&$previous_user, &$index) {
 
             if($previous_user != $message->user_id){
                 $previous_user = $message->user_id;
@@ -53,11 +51,11 @@ class RoomController extends Controller
             return $carry;
         }, []);
 
-        $article_messages = $article_messages->toArray();
+        $article = $article->toArray();
 
-        $article_messages['room']['messages'] = $mapped_messages;
+        $article['room']['messages'] = $mapped_messages;
 
-        return response()->json($article_messages, 200);
+        return response()->json($article, 200);
     }
 
     public function putMessage($article_slug)
