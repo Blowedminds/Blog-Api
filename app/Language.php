@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Language extends Model
 {
-  use SoftDeletes;
+    use SoftDeletes;
 
     /**
      * The attributes that should be mutated to dates.
@@ -16,15 +16,16 @@ class Language extends Model
      */
     protected $dates = ['deleted_at'];
 
-    protected $casts = [ 'id' => 'integer' ];
+    protected $casts = ['id' => 'integer'];
 
     protected $fillable = [
-      'slug', 'name'
+        'slug', 'name'
     ];
 
-    protected $hidden = [
-
-    ];
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function scopeSlug($query, $slug)
     {

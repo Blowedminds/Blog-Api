@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Article;
+use Illuminate\Support\Facades\Cache;
 
 class ReaderArticleController extends Controller
 {
@@ -36,42 +37,27 @@ class ReaderArticleController extends Controller
         return response()->json($article);
     }
 
-    public function getMostVieweds($locale)
+    public function getSections(Language $locale)
     {
-        $language_id = Language::slug($locale)->first()->id;
+        $sections = Cache::remember("$locale->slug:article:sections", 5, function () use ($locale) {
 
-        $most_viewed = Article::whereHasPublishedContent($language_id)
-            ->withPublishedContent($language_id)
-            ->with(['categories'])
-            ->take(10)
-            ->orderBy('views', 'DESC')
-            ->get();
+            return Category::whereIn('slug', ['bilgisayar', 'kitap', 'elektronik'])->with(['articles' => function ($query) use ($locale) {
+                $query->whereHasPublishedContent($locale->id)
+                    ->withPublishedContent($locale->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->NPerGroup('article_categories', 'category_id', 7);
+            }])->get()->toArray();
+        });
 
-        return response()->json($most_viewed, 200);
+        return response()->json($sections);
     }
 
-    public function getLatests($locale)
-    {
-        $language_id = Language::slug($locale)->first()->id;
-
-        $most_viewed = Article::whereHasPublishedContent($language_id)
-            ->withPublishedContent($language_id)
-            ->with(['categories'])
-            ->take(10)
-            ->orderBy('created_at', 'DESC')
-            ->get();
-
-        return response()->json($most_viewed, 200);
-    }
-
-    public function getArticlesByCategory($locale, $category_slug)
+    public function getArticlesByCategory(Language $locale, $category_slug)
     {
         $category = Category::slug($category_slug)->firstOrFail();
 
-        $language_id = Language::slug($locale)->firstOrFail()->id;
-
         $articles = $category->articles()
-            ->whereHasPublishedContent($language_id)
+            ->whereHasPublishedContent($locale->id)
             ->with(['contents' => function ($q) {
                 $q->select('article_id', 'title');
             }])
