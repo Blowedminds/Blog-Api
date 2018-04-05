@@ -20,12 +20,12 @@ class UserController extends Controller
 
     public function getUserInfo()
     {
-        $user = auth()->user();
+        $user = auth()->user()->with('roles')->first();
 
         return response()->json([
             'name' => $user->name,
             'user_id' => $user->user_id,
-            'role_id' => $user->roles[0]->id
+            'role_id' => $user->role->id
         ]);
     }
 
@@ -34,7 +34,7 @@ class UserController extends Controller
 
         $user = auth()->user()->with(['userData', 'roles'])->first()->toArray();
 
-        $user['user_data']['biography'] = $this->localizeField(json_decode($user['user_data']['biography'], true));
+        $user['user_data']['biography'] = $this->localizeField($user['user_data']['biography']);
 
         $user['role'] = $user['roles'][0];
 
@@ -54,7 +54,7 @@ class UserController extends Controller
 
         $user->name = request()->input('name');
 
-        $user->userData->biography = json_encode($this->localizeField(request()->input('biography')));
+        $user->userData->biography = $this->localizeField(request()->input('biography'));
 
         $user->userData->save();
 
@@ -104,16 +104,6 @@ class UserController extends Controller
         })->toArray();
 
         return response()->json($menus, 200);
-    }
-
-    private function isValidBio($bio)
-    {
-        $is_valid = Language::all('slug')->reduce(function ($carry, $language) use ($bio) {
-
-            return $carry && ($bio[$language->slug] ?? null);
-        }, true);
-
-        return (bool)$is_valid;
     }
 
     private function localizeField($field)

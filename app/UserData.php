@@ -16,7 +16,11 @@ class UserData extends Model
      */
     protected $dates = ['deleted_at'];
 
-    protected $casts = [ 'id' => 'integer', 'role_id' => 'integer' ];
+    protected $casts = [
+        'id' => 'integer',
+        'role_id' => 'integer',
+        'biography' => 'array'
+    ];
 
     protected $fillable = [
       'user_id', 'name', 'role_id', 'profile_image', 'biography'

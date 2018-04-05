@@ -18,7 +18,7 @@ class ReaderArticleController extends Controller
 
     public function getArticle($locale, $slug)
     {
-        $language_id = Language::slug($locale)->first()->id;
+        $language_id = Language::slug($locale)->firstOrFail()->id;
 
         $article = Article::slug($slug)->whereHasPublishedContent($language_id)
             ->withPublishedContent($language_id)
@@ -31,7 +31,7 @@ class ReaderArticleController extends Controller
         $article['author'] = [
             'name' => $article['author']['name'],
             'profile_image' => $article['author']['user_data']['profile_image'],
-            'biography' => json_decode($article['author']['user_data']['biography'], true)[$locale],
+            'biography' => $article['author']['user_data']['biography'][$locale],
         ];
 
         return response()->json($article);
