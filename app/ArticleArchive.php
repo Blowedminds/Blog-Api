@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ArticleArchive extends Model
 {
-  use SoftDeletes;
+    use SoftDeletes;
 
     /**
      * The attributes that should be mutated to dates.
@@ -16,9 +16,16 @@ class ArticleArchive extends Model
      */
   protected $dates = ['deleted_at'];
 
-  protected $casts = [ 'id' => 'integer', 'article_id' => 'integer', 'language_id' => 'integer', 'published' => 'integer', 'version' => 'integer'];
+    protected $casts = [
+        'id' => 'integer',
+        'article_id' => 'integer',
+        'language_id' => 'integer',
+        'keywords' => 'array',
+        'published' => 'integer',
+        'version' => 'integer',
+    ];
 
-  protected $fillable = [
+    protected $fillable = [
     'article_id', 'title', 'language_id', 'body', 'sub_title', 'keywords', 'published', 'situation', 'version'
   ];
 

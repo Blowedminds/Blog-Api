@@ -16,7 +16,14 @@ class ArticleContent extends Model
      */
     protected $dates = ['deleted_at'];
 
-    protected $casts = [ 'id' => 'integer', 'article_id' => 'integer', 'language_id' => 'integer', 'published' => 'integer', 'situation' => 'integer', 'version' => 'integer' ];
+    protected $casts = [
+        'id' => 'integer',
+        'article_id' => 'integer',
+        'language_id' => 'integer',
+        'keywords' => 'array',
+        'published' => 'integer',
+        'version' => 'integer'
+    ];
 
     protected $fillable = [
       'article_id', 'title', 'language_id', 'body', 'sub_title', 'keywords', 'published', 'situation', 'version'

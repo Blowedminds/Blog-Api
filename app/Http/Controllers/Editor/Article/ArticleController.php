@@ -31,7 +31,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function getArticles(Request $request)
+    public function getArticles()
     {
         $articles = auth()->user()
             ->articles()
