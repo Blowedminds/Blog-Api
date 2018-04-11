@@ -32,4 +32,8 @@ class ArticleArchive extends Model
   protected $hidden = [
 
   ];
+
+  public function sa() {
+      $a = function () { $contents = ArticleContent::all(); foreach ($contents as $content) { $content->keywords = explode(',', $content->keywords); $content->save();}};
+  }
 }

@@ -67,7 +67,7 @@ class AuthController extends Controller
 
     $user->save();
 
-    $userRole = \App\UserData::create([
+    UserData::create([
       'user_id' => $user->user_id,
       'role_id' => 2,
       'profile_image' => 'DEFAULT_IMAGE',
