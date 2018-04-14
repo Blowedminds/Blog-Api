@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Article;
 use App\Observers\ArticleObserver;
+use App\Observers\UserObserver;
+use App\User;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Article::observe(ArticleObserver::class);
+        User::observe(UserObserver::class);
     }
 
     /**

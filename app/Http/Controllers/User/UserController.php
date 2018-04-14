@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
@@ -20,7 +21,7 @@ class UserController extends Controller
 
     public function getUserInfo()
     {
-        $user = auth()->user()->with('roles')->first();
+        $user = User::where('user_id', auth()->user()->user_id)->with('roles')->first();
 
         return response()->json([
             'name' => $user->name,
@@ -32,7 +33,7 @@ class UserController extends Controller
     public function getUserProfile()
     {
 
-        $user = auth()->user()->with(['userData', 'roles'])->first()->toArray();
+        $user = User::where('user_id', auth()->user()->user_id)->with(['userData', 'roles'])->first()->toArray();
 
         $user['user_data']['biography'] = $this->localizeField($user['user_data']['biography']);
 
@@ -50,7 +51,7 @@ class UserController extends Controller
             'biography' => 'required'
         ]);
 
-        $user = auth()->user()->with(['userData'])->first();
+        $user = User::where('user_id', auth()->user()->user_id)->with('userData')->first();
 
         $user->name = request()->input('name');
 
@@ -60,7 +61,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->json(['Tebrikler'], 200);
+        return response()->json(['Tebrikler']);
     }
 
     public function postUserProfileImage()
@@ -89,7 +90,7 @@ class UserController extends Controller
 
         request()->file('file')->move($path, $store_name);
 
-        return response()->json(['TEBRIKLER'], 200);
+        return response()->json(['TEBRIKLER']);
     }
 
     public function getMenus($language_slug)
@@ -103,7 +104,7 @@ class UserController extends Controller
             ];
         })->toArray();
 
-        return response()->json($menus, 200);
+        return response()->json($menus);
     }
 
     private function localizeField($field)

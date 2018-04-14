@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Editor\AdminPanel;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Menu;
@@ -15,7 +16,65 @@ class AdminPanelController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['admin', 'auth:api']);
+        $this->middleware('auth:api');
+
+        $this->middleware('admin')->except([
+            'getLanguages',
+            'getCategories'
+        ]);
+    }
+
+    public function getUsers()
+    {
+        return response()->json(User::all());
+    }
+
+    public function getUser($user_id)
+    {
+        $user = User::where('user_id', $user_id)->with('roles')->firstOrFail()->toArray();
+
+        $user['role'] = $user['roles'][0];
+
+        unset($user['roles']);
+
+        return response()->json($user);
+    }
+
+    public function postUser($user_id)
+    {
+        request()->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'role_id' => 'required'
+        ]);
+
+        $user = User::findOrFail($user_id);
+
+        $user->name = request()->input('name');
+
+        $user->email = request()->input('email');
+
+        $user->userData->role_id = Role::findOrFail(request()->input('role_id'))->id;
+
+        $user->userData->save();
+        $user->save();
+
+        return response()->json([]);
+    }
+
+    public function putUser()
+    {
+        request()->validate([
+            'name' => 'required',
+            'email' => 'required'
+        ]);
+    }
+
+    public function deleteUser($user_id)
+    {
+        User::where('user_id', $user_id)->firstOrFail()->delete();
+
+        return response()->json([]);
     }
 
     public function getMenus()
@@ -41,18 +100,7 @@ class AdminPanelController extends Controller
             return $a['weight'] - $b['weight'];
         });
 
-        $roles = Role::all()->map(function ($role) {
-
-            return [
-                'id' => $role->id,
-                'name' => $role->name
-            ];
-        });
-
-        return response()->json([
-            'menus' => $menus,
-            'roles' => $roles
-        ], 200);
+        return response()->json($menus);
     }
 
     public function getCategories()
@@ -66,7 +114,7 @@ class AdminPanelController extends Controller
             ];
         });
 
-        return response()->json($categories, 200);
+        return response()->json($categories);
     }
 
     public function getLanguages()
@@ -79,7 +127,12 @@ class AdminPanelController extends Controller
             ];
         });
 
-        return response()->json($languages, 200);
+        return response()->json($languages);
+    }
+
+    public function getRoles()
+    {
+        return response()->json(Role::all());
     }
 
     public function postLanguage(Request $request)
@@ -98,7 +151,7 @@ class AdminPanelController extends Controller
 
         $language->save();
 
-        return response()->json(['TEBRIKLER'], 200);
+        return response()->json(['TEBRIKLER']);
     }
 
     public function putLanguage(Request $request)
@@ -115,7 +168,7 @@ class AdminPanelController extends Controller
             'slug' => $request->input('slug')
         ]);
 
-        return response()->json(['TEBRIKLER'], 200);
+        return response()->json(['TEBRIKLER']);
     }
 
     public function deleteLanguage($id)
@@ -124,7 +177,7 @@ class AdminPanelController extends Controller
 
         $language->forceDelete();
 
-        return response()->json(['TEBRIKLER'], 200);
+        return response()->json(['TEBRIKLER']);
     }
 
     public function postCategory($category_id)
@@ -145,7 +198,7 @@ class AdminPanelController extends Controller
 
         $category->save();
 
-        return response()->json(['TEBRIKLER'], 200);
+        return response()->json(['TEBRIKLER']);
     }
 
     public function putCategory(Request $request)
@@ -162,14 +215,14 @@ class AdminPanelController extends Controller
             'slug' => $request->input('slug')
         ]);
 
-        return response()->json(['TEBRIKLER'], 200);
+        return response()->json(['TEBRIKLER']);
     }
 
     public function deleteCategory($id)
     {
         Category::findOrFail($id)->forceDelete();
 
-        return response()->json(['TEBRIKLER'], 200);
+        return response()->json(['TEBRIKLER']);
     }
 
     public function postMenu()
@@ -211,7 +264,7 @@ class AdminPanelController extends Controller
 
         $menu->save();
 
-        return response()->json([], 200);
+        return response()->json([]);
     }
 
     public function putMenu(Request $request)
@@ -243,14 +296,14 @@ class AdminPanelController extends Controller
                 ]);
             }
 
-        return response()->json([], 200);
+        return response()->json([]);
     }
 
     public function deleteMenu($id)
     {
         Menu::findOrFail($id)->forceDelete();
 
-        return response()->json(['TEBRIKLER'], 200);
+        return response()->json(['TEBRIKLER']);
     }
 
     private function fillEmptyLocalizedMenu($localized_menu_name)

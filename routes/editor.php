@@ -32,6 +32,18 @@ Route::group(['prefix' => 'article'], function () {
 
 Route::group(['prefix' => 'panel'], function () {
 
+    Route::get('users', 'AdminPanel\AdminPanelController@getUsers');
+
+    Route::get('user/{user_id}', 'AdminPanel\AdminPanelController@getUser');
+
+    Route::post('user/{user_id}', 'AdminPanel\AdminPanelController@postUser');
+
+    Route::delete('user/{user_id}', 'AdminPanel\AdminPanelController@deleteUser');
+
+    Route::post('users', 'AdminPanel\AdminPanelController@postUser');
+
+    Route::put('users', 'AdminPanel\AdminPanelController@putUser');
+
     Route::get('menus', 'AdminPanel\AdminPanelController@getMenus');
 
     Route::post('menus', 'AdminPanel\AdminPanelController@postMenu');
@@ -55,4 +67,6 @@ Route::group(['prefix' => 'panel'], function () {
     Route::put('languages', 'AdminPanel\AdminPanelController@putLanguage');
 
     Route::delete('languages/{id}', 'AdminPanel\AdminPanelController@deleteLanguage');
+
+    Route::get('roles', 'AdminPanel\AdminPanelController@getRoles');
 });

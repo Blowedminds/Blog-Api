@@ -32,6 +32,10 @@ class ArticleObserver
 
     public function forceDeleted(Article $article)
     {
+        $article->contents()->forceDelete();
+
+        $article->article_categories()->forceDelete();
+
         $article->trashed_contents()->forceDelete();
 
         $article->trashed_categories()->forceDelete();

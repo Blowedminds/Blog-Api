@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\Auth;
 
+use App\Role;
+use App\UserData;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -32,7 +34,7 @@ class AuthController extends Controller
     return response()->json(true, 200);
   }
 
-  public function register(Request $request)
+  public function register()
   {
     $messages = [
       'name.required' => 'İsim gerekli, lütfen isminizi giriniz',
@@ -45,38 +47,35 @@ class AuthController extends Controller
       'password_confirmation.required' => 'Şifre tekrarı gerekli'
     ];
 
-    $this->validate($request, [
+    request()->validate([
         'name' => 'required',
         'email' => 'required|email|unique:users',
         'password' => 'required|min:6|confirmed',
-        'password_confirmation' => 'required'
+        'password_confirmation' => 'required',
+        'role_id' => 'required'
     ], $messages);
 
     $unique_id = uniqid('user');
 
-    $email = $request->input('email');
-    $name = $request->input('name');
-    $password = $request->input('password');
-
     $user = new \App\User([
         'user_id' => $unique_id,
-        'name' => $name,
-        'email' => $email,
-        'password' => app('hash')->make($password),
+        'name' => request()->input('name'),
+        'email' => request()->input('email'),
+        'password' => app('hash')->make(request()->input('password')),
     ]);
 
     $user->save();
 
+    $role = Role::findOrFail(request()->input('role_id'));
+
     UserData::create([
       'user_id' => $user->user_id,
-      'role_id' => 2,
+      'role_id' => $role->id,
       'profile_image' => 'DEFAULT_IMAGE',
-      'biography' => "{'tr':'Buraya kendinizi anlatan kısa bir metin yazın!''}"
+      'biography' => ['tr' => 'Buraya kendinizi anlatan kısa bir metin yazın!']
     ]);
 
-    $credentials = $request->only('email', 'password');
-
-    $login = self::_login($credentials);
+    $login = self::_login(request()->only('email', 'password'));
 
     return response()->json($login['data'], $login['status']);
   }
