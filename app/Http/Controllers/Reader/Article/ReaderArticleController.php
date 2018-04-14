@@ -41,7 +41,7 @@ class ReaderArticleController extends Controller
     {
         $sections = Cache::remember("$locale->slug:article:sections", 5, function () use ($locale) {
 
-            return Category::whereIn('slug', ['bilgisayar', 'kitap', 'elektronik'])->with(['articles' => function ($query) use ($locale) {
+            return Category::all()->with(['articles' => function ($query) use ($locale) {
                 $query->whereHasPublishedContent($locale->id)
                     ->withPublishedContent($locale->id)
                     ->orderBy('created_at', 'DESC')
