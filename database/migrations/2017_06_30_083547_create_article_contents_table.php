@@ -22,7 +22,6 @@ class CreateArticleContentsTable extends Migration
             $table->longtext('body');
             $table->text('keywords');
             $table->unsignedInteger('published');
-            $table->unsignedInteger('situation');
             $table->unsignedInteger('version');
             $table->softDeletes();
             $table->timestamps();
