@@ -1,12 +1,6 @@
 <?php
 
-Route::get('languages', 'ReaderController@getLanguages');
-
-Route::get('categories', 'ReaderController@getCategories');
-
 Route::group(['prefix' => '{locale}'], function () {
-
-    Route::get('menus', 'ReaderController@getMenus');
 
     Route::get('article/{article_slug}', 'Article\ReaderArticleController@getArticle');
 

@@ -11,7 +11,7 @@ class ArticleObserver
 {
     public function created(Article $article)
     {
-        $article_room = ArticleRoom::firstOrCreate(['article_id' => $article->id], [
+        ArticleRoom::firstOrCreate(['article_id' => $article->id], [
             'article_id' => $article->id,
         ]);
     }
