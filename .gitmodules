@@ -19,3 +19,6 @@
 [submodule "app/Modules/User"]
 	path = app/Modules/User
 	url = https://github.com/Blowedminds/Laravel-Module-User
+[submodule "app/Modules/Reader/Article"]
+	path = app/Modules/Reader/Article
+	url = https://github.com/Blowedminds/Laravel-Module-ReaderArticle
