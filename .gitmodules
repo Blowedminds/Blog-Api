@@ -13,3 +13,9 @@
 [submodule "app/Modules/Discuss"]
 	path = app/Modules/Discuss
 	url = https://github.com/Blowedminds/Laravel-Module-Discuss
+[submodule "app/Modules/Image"]
+	path = app/Modules/Image
+	url = https://github.com/Blowedminds/Laravel-Module-Image
+[submodule "app/Modules/User"]
+	path = app/Modules/User
+	url = https://github.com/Blowedminds/Laravel-Module-User
