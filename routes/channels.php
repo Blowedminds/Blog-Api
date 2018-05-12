@@ -14,3 +14,7 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('presence-article.{article_slug}', function($user, $id) {
+    return ['array'];
+});

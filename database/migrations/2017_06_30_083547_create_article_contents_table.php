@@ -15,15 +15,14 @@ class CreateArticleContentsTable extends Migration
     {
         Schema::create('article_contents', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('article_id');
+            $table->unsignedInteger('article_id');
             $table->string('sub_title', 255);
             $table->string('title', 255);
-            $table->integer('language_id');
+            $table->unsignedInteger('language_id');
             $table->longtext('body');
             $table->text('keywords');
-            $table->integer('published');
-            $table->integer('situation');
-            $table->integer('version');
+            $table->unsignedInteger('published');
+            $table->unsignedInteger('version');
             $table->softDeletes();
             $table->timestamps();
         });

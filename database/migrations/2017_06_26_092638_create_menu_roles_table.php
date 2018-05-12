@@ -15,8 +15,8 @@ class CreateMenuRolesTable extends Migration
     {
         Schema::create('menu_roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('menu_id');
-            $table->integer('role_id');
+            $table->unsignedInteger('menu_id');
+            $table->unsignedInteger('role_id');
             $table->softDeletes();
             $table->timestamps();
         });
