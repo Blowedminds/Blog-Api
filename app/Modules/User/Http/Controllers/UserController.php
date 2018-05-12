@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Modules\User\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 
 use App\Language;
-use App\Http\Controllers\Api\MainApi as API;
-use App\Http\Controllers\Api\AuthApi;
-use App\Exceptions\InvalidInputException;
 
 class UserController extends Controller
 {
