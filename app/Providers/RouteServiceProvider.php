@@ -104,8 +104,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('discuss')
             ->middleware('api')
-            ->namespace($this->namespace . "\Discuss")
-            ->group(base_path('routes/discuss.php'));
+            ->namespace($this->moduleNamespace . "\Discuss\Http\Controllers")
+            ->group(base_path('app/Modules/Discuss/Http/discuss.php'));
     }
 
     protected function mapAuthRoutes()

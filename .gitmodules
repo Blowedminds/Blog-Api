@@ -10,3 +10,6 @@
 [submodule "app/Modules/Editor/Admin"]
 	path = app/Modules/Editor/Admin
 	url = https://github.com/Blowedminds/Laravel-Module-Admin
+[submodule "app/Modules/Discuss"]
+	path = app/Modules/Discuss
+	url = https://github.com/Blowedminds/Laravel-Module-Discuss
