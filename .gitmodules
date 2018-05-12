@@ -1,0 +1,12 @@
+[submodule "app/Modules/Auth"]
+	path = app/Modules/Auth
+	url = https://github.com/Blowedminds/Laravel-Module-Auth
+[submodule "app/Modules/Core"]
+	path = app/Modules/Core
+	url = https://github.com/Blowedminds/Laravel-Module-Core
+[submodule "app/Modules/Editor/Article"]
+	path = app/Modules/Editor/Article
+	url = https://github.com/Blowedminds/Laravel-Module-EditorArticle
+[submodule "app/Modules/Editor/Admin"]
+	path = app/Modules/Editor/Admin
+	url = https://github.com/Blowedminds/Laravel-Module-Admin

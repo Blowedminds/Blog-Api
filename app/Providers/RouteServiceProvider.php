@@ -120,8 +120,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('admin')
             ->middleware('api')
-            ->namespace($this->moduleNamespace . "\Editor\AdminPanel\Http\Controllers")
-            ->group(base_path('app/Modules/Editor/AdminPanel/Http/admin.php'));
+            ->namespace($this->moduleNamespace . "\Editor\Admin\Http\Controllers")
+            ->group(base_path('app/Modules/Editor/Admin/Http/admin.php'));
     }
 
     protected function mapArticleRoutes()
