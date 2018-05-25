@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Article;
-use App\Observers\ArticleObserver;
-use App\Observers\UserObserver;
-use App\User;
+use App\Modules\Core\Article;
+use App\Modules\Editor\Article\Observers\ArticleObserver;
+use App\Modules\User\Observers\UserObserver;
+use App\Modules\User\User;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
