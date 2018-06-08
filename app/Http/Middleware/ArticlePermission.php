@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Article;
+use App\Modules\Core\Article;
 use Closure;
 
 class ArticlePermission
@@ -20,7 +20,7 @@ class ArticlePermission
             $request->route('article_id') :
             Article::slug($request->route('article_slug'))->first(['id'])->id;
 
-        $permission = \App\ArticlePermission::where('article_id', $article_id)
+        $permission = \App\Modules\Core\ArticlePermission::where('article_id', $article_id)
             ->where('user_id', auth()->user()->user_id)
             ->count();
 

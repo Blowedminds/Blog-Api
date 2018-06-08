@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Modules\Core\Category;
+use App\Modules\Core\Article;
 use App\Modules\Core\Language;
-use Illuminate\Support\Facades\Cache;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class HomeController extends Controller
 {
@@ -27,11 +27,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $locale = Language::first();
+        $language = Language::slug(LaravelLocalization::getCurrentLocale())->firstOrFail();
 
+        $articles = Article::whereHasPublishedContent($language->id)
+            ->withPublishedContent($language->id)
+            ->with('categories')
+            ->paginate(3)
+            ->toArray();
 
         return view('home')->with([
             'menus' => $this->getMenus(),
+            'articles' => $articles
         ]);
     }
 }
