@@ -8,5 +8,13 @@
 // Theme
 
 .language-selector {
-  float: right;
+  list-style: none;
+  text-align: right;
+
+  a {
+    &:hover {
+      color: wheat;
+    }
+    color: white;
+  }
 }

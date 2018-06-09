@@ -1,2 +1,13 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);.language-selector {
+  list-style: none;
+  text-align: right;
+}
+
+.language-selector a {
+  color: white;
+}
+
+.language-selector a:hover {
+  color: wheat;
+}
 

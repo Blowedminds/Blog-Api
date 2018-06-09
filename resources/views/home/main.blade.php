@@ -11,7 +11,12 @@
                             @if(!empty($latest_big['categories']))
                                 <span class="entry__category"><a>{{$latest_big['categories'][0]['name']}}</a></span>
                             @endif
-                            <h1><a href="#0" title="">{{$latest_big['content']['title']}}</a></h1>
+                            <h1>
+                                <a href="{{LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), 'articles/'.$latest_big['slug'])}}"
+                                   title="">
+                                    {{$latest_big['content']['title']}}
+                                </a>
+                            </h1>
 
                             <div class="entry__info">
                                 {{--<a href="#0" class="entry__profile-pic">--}}
@@ -38,7 +43,12 @@
                             <span class="entry__category"><a>{{$article['categories'][0]['name']}}</a></span>
                         @endif
 
-                        <h1><a href="#0" title="">{{$article['content']['title']}}</a></h1>
+                        <h1>
+                            <a href="{{LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), 'articles/'.$article['slug'])}}"
+                               title="">
+                                {{$article['content']['title']}}
+                            </a>
+                        </h1>
 
                         <div class="entry__info">
                             {{--<a href="#0" class="entry__profile-pic">--}}

@@ -49,6 +49,17 @@
 
                 <a class="header__search-trigger" href="#0"></a>
 
+                <ul class="language-selector">
+                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        @if($localeCode != LaravelLocalization::getCurrentLocale())
+                            <li>
+                                <a rel="alternate" hreflang="{{ $localeCode }}" class="navbar-item" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                    {{ $properties['native'] }}
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
                 <div class="header__search">
 
                     <form role="search" method="get" class="header__search-form" action="#">
@@ -77,15 +88,7 @@
                                    title="{{$menu->tooltip}}">{{$menu->name}}</a>
                             </li>
                         @endforeach
-                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                            @if($localeCode != LaravelLocalization::getCurrentLocale())
-                                <li class="language-selector">
-                                    <a rel="alternate" hreflang="{{ $localeCode }}" class="navbar-item" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                        {{ $properties['native'] }}
-                                    </a>
-                                </li>
-                            @endif
-                        @endforeach
+
                         {{--<li class="has-children">--}}
                             {{--<a href="#0" title="">Categories</a>--}}
                             {{--<ul class="sub-menu">--}}
