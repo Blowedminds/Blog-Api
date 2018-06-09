@@ -3,72 +3,57 @@
 
         <div class="featured">
 
-            <div class="featured__column featured__column--big">
-                <div class="entry" style="background-image:url('images/thumbs/featured/featured-guitarman.jpg');">
+            @if(!empty($latest_big))
+                <div class="featured__column featured__column--big">
+                    <div class="entry" style="background-image:url('/image/image/{{$latest_big['image']}}');">
 
-                    <div class="entry__content">
-                        <span class="entry__category"><a href="#0">Music</a></span>
+                        <div class="entry__content">
+                            @if(!empty($latest_big['categories']))
+                                <span class="entry__category"><a>{{$latest_big['categories'][0]['name']}}</a></span>
+                            @endif
+                            <h1><a href="#0" title="">{{$latest_big['content']['title']}}</a></h1>
 
-                        <h1><a href="#0" title="">What Your Music Preference Says About You and Your Personality.</a></h1>
+                            <div class="entry__info">
+                                {{--<a href="#0" class="entry__profile-pic">--}}
+                                    {{--<img class="avatar" src="images/avatars/user-03.jpg" alt="">--}}
+                                {{--</a>--}}
 
-                        <div class="entry__info">
-                            <a href="#0" class="entry__profile-pic">
-                                <img class="avatar" src="images/avatars/user-03.jpg" alt="">
-                            </a>
+                                <ul class="entry__meta">
+                                    <li>{{$latest_big['author']['name']}}</li>
+                                    <li>{{$latest_big['content']['created_at']}}</li>
+                                </ul>
+                            </div>
+                        </div> <!-- end entry__content -->
 
-                            <ul class="entry__meta">
-                                <li><a href="#0">John Doe</a></li>
-                                <li>December 29, 2017</li>
-                            </ul>
-                        </div>
-                    </div> <!-- end entry__content -->
-
-                </div> <!-- end entry -->
-            </div> <!-- end featured__big -->
+                    </div> <!-- end entry -->
+                </div> <!-- end featured__big -->
+            @endif
 
             <div class="featured__column featured__column--small">
-
-                <div class="entry" style="background-image:url('images/thumbs/featured/featured-watch.jpg');">
+                @foreach($latest as $article)
+                <div class="entry" style="background-image:url('/image/image/{{$article['image']}}');">
 
                     <div class="entry__content">
-                        <span class="entry__category"><a href="#0">Management</a></span>
+                        @if(!empty($article['categories']))
+                            <span class="entry__category"><a>{{$article['categories'][0]['name']}}</a></span>
+                        @endif
 
-                        <h1><a href="#0" title="">The Pomodoro Technique Really Works.</a></h1>
+                        <h1><a href="#0" title="">{{$article['content']['title']}}</a></h1>
 
                         <div class="entry__info">
-                            <a href="#0" class="entry__profile-pic">
-                                <img class="avatar" src="images/avatars/user-03.jpg" alt="">
-                            </a>
+                            {{--<a href="#0" class="entry__profile-pic">--}}
+                                {{--<img class="avatar" src="images/avatars/user-03.jpg" alt="">--}}
+                            {{--</a>--}}
 
                             <ul class="entry__meta">
-                                <li><a href="#0">John Doe</a></li>
-                                <li>December 27, 2017</li>
+                                <li><a href="#0">{{$article['author']['name']}}</a></li>
+                                <li>{{$article['content']['created_at']}}</li>
                             </ul>
                         </div>
                     </div> <!-- end entry__content -->
 
                 </div> <!-- end entry -->
-
-                <div class="entry" style="background-image:url('images/thumbs/featured/featured-beetle.jpg');">
-
-                    <div class="entry__content">
-                        <span class="entry__category"><a href="#0">LifeStyle</a></span>
-
-                        <h1><a href="#0" title="">Throwback To The Good Old Days.</a></h1>
-
-                        <div class="entry__info">
-                            <a href="#0" class="entry__profile-pic">
-                                <img class="avatar" src="images/avatars/user-03.jpg" alt="">
-                            </a>
-
-                            <ul class="entry__meta">
-                                <li><a href="#0">John Doe</a></li>
-                                <li>December 21, 2017</li>
-                            </ul>
-                        </div>
-                    </div> <!-- end entry__content -->
-
-                </div> <!-- end entry -->
+                @endforeach
 
             </div> <!-- end featured__small -->
         </div> <!-- end featured -->

@@ -5,7 +5,7 @@
         </div>
         <hr>
         <div class="copyright">
-            © 2016 PinoyNanny CA. All rights reserved <br> Created by Blowedminds
+            © 2016 PinoyNanny CA. All rights reserved <br> Created by blowedminds
         </div>
     </div>
 </footer>

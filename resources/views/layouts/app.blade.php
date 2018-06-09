@@ -48,17 +48,7 @@
                 </ul> <!-- end header__social -->
 
                 <a class="header__search-trigger" href="#0"></a>
-                <ul>
-                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                        @if($localeCode != LaravelLocalization::getCurrentLocale())
-                            <li>
-                                <a rel="alternate" hreflang="{{ $localeCode }}" class="navbar-item" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                    {{ $properties['native'] }}
-                                </a>
-                            </li>
-                        @endif
-                    @endforeach
-                </ul>
+
                 <div class="header__search">
 
                     <form role="search" method="get" class="header__search-form" action="#">
@@ -76,28 +66,6 @@
 
                 <a class="header__toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
 
-                <nav id="navbar" class="navbar navigation" role="navigation" aria-label="main navigation">
-                    <div class="container">
-                        {{--<div class="navbar-brand">--}}
-                            {{--<a class="navbar-item" href="/" title="{{ config('app.name', 'Laravel') }}">--}}
-                                {{--<img src="/images/logo.png">--}}
-                                {{--<span class="is-size-5 has-text-weight-light">SGK Danışmanım</span>--}}
-                            {{--</a>--}}
-
-                            {{--<div class="navbar-burger" data-target="navMenu">--}}
-                                {{--<span></span>--}}
-                                {{--<span></span>--}}
-                                {{--<span></span>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        <div id="navMenu" class="navbar-menu">
-                            <div class="navbar-end">
-
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-
                 <nav class="header__nav-wrap">
 
                     <h2 class="header__nav-heading h6">Site Navigation</h2>
@@ -109,7 +77,15 @@
                                    title="{{$menu->tooltip}}">{{$menu->name}}</a>
                             </li>
                         @endforeach
-
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                            @if($localeCode != LaravelLocalization::getCurrentLocale())
+                                <li class="language-selector">
+                                    <a rel="alternate" hreflang="{{ $localeCode }}" class="navbar-item" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                        {{ $properties['native'] }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
                         {{--<li class="has-children">--}}
                             {{--<a href="#0" title="">Categories</a>--}}
                             {{--<ul class="sub-menu">--}}

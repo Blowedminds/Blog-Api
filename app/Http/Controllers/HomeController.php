@@ -29,15 +29,24 @@ class HomeController extends Controller
     {
         $language = Language::slug(LaravelLocalization::getCurrentLocale())->firstOrFail();
 
-        $articles = Article::whereHasPublishedContent($language->id)
-            ->withPublishedContent($language->id)
-            ->with('categories')
-            ->paginate(3)
-            ->toArray();
+        $i = 0;
 
+        [$latest, $articles] = Article::whereHasPublishedContent($language->id)
+            ->withPublishedContent($language->id)
+            ->with(['categories', 'author'])
+            ->take(15)
+            ->orderBy('created_at', 'DESC')
+            ->get()
+            ->partition(function($item) use(&$i) { return $i++ < 3;});
+
+        $latest_big = collect($latest->shift());
+
+//                dd($latest, $latest_big, $articles);
         return view('home')->with([
             'menus' => $this->getMenus(),
-            'articles' => $articles
+            'articles' => $articles->toArray(),
+            'latest' => $latest->toArray(),
+            'latest_big' => $latest_big->toArray()
         ]);
     }
 }
