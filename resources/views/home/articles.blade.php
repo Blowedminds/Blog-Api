@@ -2,22 +2,15 @@
    ================================================== -->
 <section class="s-content">
 
-    <div class="columns masonry-wrap">
-        <div class="masonry">
-
-        </div>
-    </div>
-
     <div class="row masonry-wrap">
 
         <div class="masonry">
 
-            <div class="grid-sizer"></div>
             @foreach($articles as $article)
                 <article class="masonry__brick entry format-standard">
 
                     <div class="entry__thumb">
-                        <a href="{{LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), 'articles/'.$article['slug'])}}"
+                        <a href="@localizeURL('articles/'.$article['slug'])"
                            class="entry__thumb-link">
                             <img src="/image/image/{{$article['image']}}"
                                  alt="">
@@ -28,10 +21,10 @@
                         <div class="entry__header">
 
                             <div class="entry__date">
-                                <a href="{{LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), 'articles/'.$article['slug'])}}">{{$article['content']['created_at']}}</a>
+                                <a href="@localizeURL('articles/'.$article['slug'])">{{$article['content']['created_at']}}</a>
                             </div>
                             <h1 class="entry__title">
-                                <a href="{{LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), 'articles/'.$article['slug'])}}">{{$article['content']['title']}}</a>
+                                <a href="@localizeURL('articles/'.$article['slug'])">{{$article['content']['title']}}</a>
                             </h1>
 
                         </div>
@@ -41,7 +34,7 @@
                         <div class="entry__meta">
                             <span class="entry__meta-links">
                                 @foreach($article['categories'] as $category)
-                                    <a href="/categories/{{$category['slug']}}">{{$category['name']}}</a>
+                                    <a href="@localizeURL('category/'. $category['slug'])">{{$category['name']}}</a>
                                 @endforeach
                             </span>
                         </div>

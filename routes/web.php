@@ -18,17 +18,20 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
     });
     Route::get('/', 'HomeController@index')->name('home');
 
-    Route::get('/contact-us', 'ContactUsController@index')->name('contact-us');
+//    Route::get('/contact-us', 'ContactUsController@index')->name('contact-us');
 
     Route::get('/about-us', 'AboutUsController@index')->name('about-us');
 
-    Route::get('/faq', 'FAQController@index')->name('faq');
+//    Route::get('/faq', 'FAQController@index')->name('faq');
 
     Route::get('/blog', function () {
         return 'Under Construction <a href="/">Back to Main Page</a>';
     })->name('blog');
 
-    Route::get('/services/{service?}', 'ServiceController@index')->name('services');
+//    Route::get('/services/{service?}', 'ServiceController@index')->name('services');
 
     Route::get('/articles/{article_slug}', 'ArticleController@index');
+
+    Route::get('/categories', 'CategoriesController@index');
+    Route::get('/category/{category_slug}', 'ArchiveController@category');
 });

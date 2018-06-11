@@ -68,7 +68,7 @@ return [
         //'bez'         => ['name' => 'Bena',                   'script' => 'Latn', 'native' => 'Hibena', 'regional' => ''],
         //'ho'          => ['name' => 'Hiri Motu',              'script' => 'Latn', 'native' => 'Hiri Motu', 'regional' => ''],
         //'hr'          => ['name' => 'Croatian',               'script' => 'Latn', 'native' => 'hrvatski', 'regional' => 'hr_HR'],
-        //'bem'         => ['name' => 'Bemba',                  'script' => 'Latn', 'native' => 'Ichibemba', 'regional' => 'bem_ZM'],
+        //'bem'         => en['name' => 'Bemba',                  'script' => 'Latn', 'native' => 'Ichibemba', 'regional' => 'bem_ZM'],
         //'io'          => ['name' => 'Ido',                    'script' => 'Latn', 'native' => 'Ido', 'regional' => ''],
         //'ig'          => ['name' => 'Igbo',                   'script' => 'Latn', 'native' => 'Igbo', 'regional' => 'ig_NG'],
         //'rn'          => ['name' => 'Rundi',                  'script' => 'Latn', 'native' => 'Ikirundi', 'regional' => ''],
@@ -299,7 +299,7 @@ return [
 
     // Negotiate for the user locale using the Accept-Language header if it's not defined in the URL?
     // If false, system will take app.php locale attribute
-    'useAcceptLanguageHeader' => true,
+    'useAcceptLanguageHeader' => false,
 
     // If LaravelLocalizationRedirectFilter is active and hideDefaultLocaleInURL
     // is true, the url would not have the default application language

@@ -9,10 +9,14 @@
 
                         <div class="entry__content">
                             @if(!empty($latest_big['categories']))
-                                <span class="entry__category"><a>{{$latest_big['categories'][0]['name']}}</a></span>
+                                <span class="entry__category">
+                                    <a href="@localizeURL('category/' . $latest_big['categories'][0]['slug'])">
+                                        {{$latest_big['categories'][0]['name']}}
+                                    </a>
+                                </span>
                             @endif
                             <h1>
-                                <a href="{{LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), 'articles/'.$latest_big['slug'])}}"
+                                <a href="@localizeURL('articles/'.$latest_big['slug'])"
                                    title="">
                                     {{$latest_big['content']['title']}}
                                 </a>
@@ -40,7 +44,11 @@
 
                     <div class="entry__content">
                         @if(!empty($article['categories']))
-                            <span class="entry__category"><a>{{$article['categories'][0]['name']}}</a></span>
+                            <span class="entry__category">
+                                    <a href="@localizeURL('category/' . $article['categories'][0]['slug'])">
+                                        {{$article['categories'][0]['name']}}
+                                    </a>
+                                </span>
                         @endif
 
                         <h1>

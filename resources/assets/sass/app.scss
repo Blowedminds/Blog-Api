@@ -1,20 +1,13 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+//@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
 // Variables
 @import "variables";
-
+@import "theme/base";
+@import "theme/main";
+@import "nav";
+@import "home";
+@import "article";
+@import "comment";
 // Theme
-
-.language-selector {
-  list-style: none;
-  text-align: right;
-
-  a {
-    &:hover {
-      color: wheat;
-    }
-    color: white;
-  }
-}
