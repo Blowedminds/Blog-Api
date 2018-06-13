@@ -58,7 +58,7 @@
                 {{--</ul>--}}
             {{--</div>--}}
 
-            <a class="header__toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
+            <a class="header__toggle-menu" title="Menu"><span>Menu</span></a>
 
             <nav class="header__nav-wrap">
 
@@ -73,7 +73,7 @@
                     @endforeach
                 </ul> <!-- end header__nav -->
 
-                <a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Close</a>
+                <a href="#0" title="Close Menu" id="header__nav-wrap-close" class="header__overlay-close close-mobile-menu">Close</a>
 
             </nav> <!-- end header__nav-wrap -->
 
@@ -81,3 +81,53 @@
     </header> <!-- header -->
 
 </div> <!-- end s-pageheader -->
+
+@section('scripts')
+<script>
+    (function() {
+        var navWrap = document.getElementsByClassName('header__nav-wrap').item(0),
+            closeNavWrap = document.getElementById('header__nav-wrap-close'),
+            menuToggle = document.getElementsByClassName('header__toggle-menu').item(0),
+            siteBody = document.getElementsByTagName('body').item(0);
+
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            siteBody.classList.add('nav-wrap-is-visible');
+        });
+
+        closeNavWrap.addEventListener('click', function(e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var className = ' nav-wrap-is-visible ';
+            if ( (" " + siteBody.className + " ").replace(/[\n\t]/g, " ").indexOf(className) > -1 ) {
+                siteBody.classList.remove('nav-wrap-is-visible');
+            }
+        });
+
+        // // open (or close) submenu items in mobile view menu.
+        // // close all the other open submenu items.
+        // $('.header__nav .has-children').children('a').on('click', function (e) {
+        //     e.preventDefault();
+        //
+        //     if ($(".close-mobile-menu").is(":visible") == true) {
+        //
+        //         $(this).toggleClass('sub-menu-is-open')
+        //             .next('ul')
+        //             .slideToggle(200)
+        //             .end()
+        //             .parent('.has-children')
+        //             .siblings('.has-children')
+        //             .children('a')
+        //             .removeClass('sub-menu-is-open')
+        //             .next('ul')
+        //             .slideUp(200);
+        //
+        //     }
+        // });
+
+    })();
+</script>
+@endsection
