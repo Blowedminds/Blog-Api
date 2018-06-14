@@ -20,7 +20,6 @@
                         <h1 class="s-content__header-title">
                             {{$title}}
                         </h1>
-
                     </div> <!-- end s-content__header -->
 
                     <div class="col-full">
