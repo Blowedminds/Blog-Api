@@ -40,7 +40,11 @@
 
                         @if($articles['current_page'] + 2 < $articles['last_page'])
                             <li>...</li>
-                            <li><a class="pgn__num" href="{{$articles['path']}}?page={{$articles['last_page']}}">{{$articles['last_page']}}</a></li>
+                            <li>
+                                <a class="pgn__num" href="{{$articles['path']}}?page={{$articles['last_page']}}">
+                                    {{$articles['last_page']}}
+                                </a>
+                            </li>
                         @endif
 
                         @isset($articles['next_page_url'])
