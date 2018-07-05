@@ -11,3 +11,4 @@ artisan_serve.bat
 /public/images
 *.sh
 _ide_helper.php
+.DS_Store

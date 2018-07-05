@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Http\Controllers\Api\AuthApi;
 use App\Exceptions\RestrictedAreaException;
 
 class Admin
