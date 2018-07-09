@@ -62,7 +62,7 @@
         <div class="row">
             <div class="col-full">
                 <div class="s-footer__copyright">
-                    <span>© 2016 PinoyNanny CA. All rights reserved <br> Created by blowedminds</span>
+                    <span>© 2016 DK. All rights reserved <br> Created by blowedminds</span>
                     <span>Site Template by <a href="https://colorlib.com/">Colorlib</a></span>
                 </div>
 
