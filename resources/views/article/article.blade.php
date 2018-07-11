@@ -7,10 +7,10 @@
                     {{$article->content->title}}
                 </h1>
                 <ul class="s-content__header-meta">
-                    <li class="date">{{$article->content->created_at}}</li>
+                    <li class="date">@datetime($article->content->created_at)</li>
                     <li class="cat">
                         @foreach($article['categories'] as $category)
-                            <a href="/categories/{{$category['slug']}}">{{$category['name']}}</a>
+                            <a href="/category/{{$category['slug']}}">{{$category['name']}}</a>
                         @endforeach
                     </li>
                 </ul>

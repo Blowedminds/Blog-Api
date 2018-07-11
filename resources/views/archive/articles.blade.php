@@ -10,7 +10,7 @@
                     <span class="popular__author"><span>By</span> <a> {{$article['author']['name']}}</a></span>
                     <span class="popular__date">
                         <span>on</span>
-                        <time datetime="{{$article['content']['created_at']}}">{{$article['content']['created_at']}}
+                        <time datetime="{{$article['content']['created_at']}}">@datetime($article['content']['created_at'])
                         </time>
                     </span>
                 </section>

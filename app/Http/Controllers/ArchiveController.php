@@ -24,6 +24,7 @@ class ArchiveController extends Controller
             ->whereHasPublishedContent($language->id)
             ->withPublishedContent($language->id)
             ->with(['categories', 'author'])
+            ->orderBy('created_at', 'DESC')
             ->paginate(20)
             ->toArray();
 

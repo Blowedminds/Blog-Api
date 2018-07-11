@@ -958,10 +958,13 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 
   .entry__thumb-link {
 
+    &:hover::before {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
     &::before {
       content: "";
       display: block;
-      background: rgba(0, 0, 0, 0.8);
       opacity: 0;
       visibility: hidden;
       position: absolute;

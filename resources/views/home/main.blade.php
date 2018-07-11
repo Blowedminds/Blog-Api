@@ -29,7 +29,7 @@
 
                                 <ul class="entry__meta">
                                     <li>{{$latest_big['author']['name']}}</li>
-                                    <li>{{$latest_big['content']['created_at']}}</li>
+                                    <li>@datetime($latest_big['content']['created_at'])</li>
                                 </ul>
                             </div>
                         </div> <!-- end entry__content -->
@@ -65,7 +65,7 @@
 
                             <ul class="entry__meta">
                                 <li><a href="#0">{{$article['author']['name']}}</a></li>
-                                <li>{{$article['content']['created_at']}}</li>
+                                <li>@datetime($article['content']['created_at'])</li>
                             </ul>
                         </div>
                     </div> <!-- end entry__content -->

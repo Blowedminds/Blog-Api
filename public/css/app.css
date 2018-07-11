@@ -1981,10 +1981,13 @@ input::-moz-focus-inner {
   overflow: hidden;
 }
 
+.masonry .entry__thumb-link:hover::before {
+  background: rgba(0, 0, 0, 0.8);
+}
+
 .masonry .entry__thumb-link::before {
   content: "";
   display: block;
-  background: rgba(0, 0, 0, 0.8);
   opacity: 0;
   visibility: hidden;
   position: absolute;
@@ -3509,18 +3512,11 @@ body.search-is-visible {
   position: absolute;
   right: 20px;
   top: 15px;
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-size: contain;
-}
-
-.header__search-trigger::before {
   font-family: "metropolis-semibold", sans-serif;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 2px;
   line-height: 21px;
-  content: "Search";
   display: block;
   color: #FFFFFF;
   float: left;
@@ -4363,6 +4359,46 @@ html.no-csstransitions .featured {
   .featured .entry__content {
     bottom: 3rem;
     padding: 0 2.4rem 0;
+  }
+}
+
+.articles {
+  margin: auto;
+}
+
+.articles.long-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.articles .long-column {
+  -webkit-box-flex: 33%;
+      -ms-flex: 33%;
+          flex: 33%;
+  max-width: 33%;
+  padding: 0 4px;
+  /* Responsive layout - makes a two column-layout instead of four columns */
+  /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+}
+
+@media (max-width: 800px) {
+  .articles .long-column {
+    -webkit-box-flex: 50%;
+        -ms-flex: 50%;
+            flex: 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .articles .long-column {
+    -webkit-box-flex: 100%;
+        -ms-flex: 100%;
+            flex: 100%;
+    max-width: 100%;
   }
 }
 

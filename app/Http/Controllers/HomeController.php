@@ -41,10 +41,20 @@ class HomeController extends Controller
 
         $latest_big = collect($latest->shift());
 
-//                dd($latest, $latest_big, $articles);
+        $articles = $articles->toArray();
+
+        $dividedArticles = [[], [], []];
+
+        while (count($articles) > 0) {
+
+            for ($i = 0, $count = count($dividedArticles); $i < $count && count($articles) > 0; $i++ ) {
+                $dividedArticles[$i][] = array_shift($articles);
+            }
+        }
+
         return view('home')->with([
             'menus' => $this->getMenus(),
-            'articles' => $articles->toArray(),
+            'articles' => $dividedArticles,
             'latest' => $latest->toArray(),
             'latest_big' => $latest_big->toArray()
         ]);

@@ -262,22 +262,19 @@ body.search-is-visible {
   right: 20px;
   top: 15px;
   //background-image: url(../images/icons/icon-search.svg);
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-size: contain;
+  //background-repeat: no-repeat;
+  //background-position: right center;
+  //background-size: contain;
+  font-family: "metropolis-semibold", sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 21px;
+  display: block;
+  color: #FFFFFF;
+  float: left;
+  padding-right: 33px;
 
-  &::before {
-    font-family: "metropolis-semibold", sans-serif;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    line-height: 21px;
-    content: "Search";
-    display: block;
-    color: #FFFFFF;
-    float: left;
-    padding-right: 33px;
-  }
 }
 
 /* -------------------------------------------------------------------

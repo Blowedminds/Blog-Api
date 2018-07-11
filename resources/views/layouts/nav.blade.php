@@ -26,37 +26,22 @@
                 </li>
             </ul> <!-- end header__social -->
 
-            <a class="header__search-trigger" href="#0"></a>
+            <a class="header__search-trigger" href="">Search <i class="fa fa-search"></i></a>
 
             <div class="header__search">
 
-                <form role="search" method="get" class="header__search-form" action="#">
+                <form role="search" method="get" class="header__search-form" action="/results">
                     <label>
-                        <span class="hide-content">Search for:</span>
-                        <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s"
-                               title="Search for:" autocomplete="off">
+                        <span class="hide-content">Search for</span>
+                        <input type="search" class="search-field" placeholder="Type Keywords" value="" name="q"
+                               title="Search for" autocomplete="off">
                     </label>
                     <input type="submit" class="search-submit" value="Search">
                 </form>
 
-                <a href="#0" title="Close Search" class="header__overlay-close">Close</a>
+                <a href="" title="Close Search" class="header__overlay-close">Close</a>
 
             </div>  <!-- end header__search -->
-
-            {{--<div class="header__language">--}}
-                {{--<ul>--}}
-                    {{--@foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)--}}
-                        {{--@if($localeCode != LaravelLocalization::getCurrentLocale())--}}
-                            {{--<li>--}}
-                                {{--<a rel="alternate" hreflang="{{ $localeCode }}" class="navbar-item"--}}
-                                   {{--href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">--}}
-                                    {{--{{ $properties['native'] }}--}}
-                                {{--</a>--}}
-                            {{--</li>--}}
-                        {{--@endif--}}
-                    {{--@endforeach--}}
-                {{--</ul>--}}
-            {{--</div>--}}
 
             <a class="header__toggle-menu" title="Menu"><span>Menu</span></a>
 
@@ -107,27 +92,27 @@
             }
         });
 
-        // // open (or close) submenu items in mobile view menu.
-        // // close all the other open submenu items.
-        // $('.header__nav .has-children').children('a').on('click', function (e) {
-        //     e.preventDefault();
-        //
-        //     if ($(".close-mobile-menu").is(":visible") == true) {
-        //
-        //         $(this).toggleClass('sub-menu-is-open')
-        //             .next('ul')
-        //             .slideToggle(200)
-        //             .end()
-        //             .parent('.has-children')
-        //             .siblings('.has-children')
-        //             .children('a')
-        //             .removeClass('sub-menu-is-open')
-        //             .next('ul')
-        //             .slideUp(200);
-        //
-        //     }
-        // });
+        var searchTrigger = document.getElementsByClassName('header__search-trigger').item(0),
+            searchOverlay = document.getElementsByClassName('header__search').item(0),
+            searchClose = document.getElementsByClassName('header__overlay-close').item(0);
 
+        searchTrigger.addEventListener('click', function(e) {
+           e.preventDefault();
+           e.stopPropagation();
+
+           searchOverlay.style.opacity = 1;
+           searchOverlay.style.visibility = 'visible';
+        });
+
+        searchClose.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            searchOverlay.style.opacity = 0;
+            setTimeout(function() {
+                searchOverlay.style.visibility = 'hidden';
+            }, 1000);
+        })
     })();
 </script>
 @endsection
