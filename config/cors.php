@@ -14,9 +14,9 @@ return [
    
     'supportsCredentials' => false,
     'allowedOrigins' => [
-        env('APP_PUBLIC_URL', 'http://localhost'),
-        env('APP_ADMIN_URL', 'http://localhost'),
-        env('APP_DISCUSS_URL', 'http://localhost')
+        env('APP_PUBLIC_URL', 'http://dkblog.com'),
+        env('APP_ADMIN_URL', 'http://mng.dkblog.com'),
+        env('APP_DISCUSS_URL', 'http://forum.dkblog.com')
     ],
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['Content-Type', 'x-xsrf-token', 'X-Requested-With', 'enctype', 'x-socket-id'],

@@ -1,4 +1,5 @@
 /vendor
+/node_modules
 /storage/.idea
 Homestead.json
 Homestead.yaml
@@ -10,3 +11,4 @@ artisan_serve.bat
 /public/images
 *.sh
 _ide_helper.php
+.DS_Store
