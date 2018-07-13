@@ -10,4 +10,34 @@
 @import "home";
 @import "article";
 @import "comment";
-// Theme
+
+@import "~bulma";
+
+html {
+  font-size: 10px !important;
+  background-color: initial !important;
+}
+
+body {
+  background: #19191b;
+  font-family: "metropolis-regular", sans-serif;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.875;
+  color: #656565;
+  margin: 0;
+  padding: 0;
+}
+
+// Bulma custom
+
+.has-background-cover {
+  background-size: cover;
+}
+
+.has-background-centered {
+  background-position: center;
+}
+
+

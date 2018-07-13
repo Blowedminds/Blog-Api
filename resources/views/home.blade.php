@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section id="main" class="main container">
+    <section id="main" class="main">
         <div class="sections">
             @include('home.main')
 

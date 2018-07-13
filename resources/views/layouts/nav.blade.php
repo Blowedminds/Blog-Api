@@ -6,7 +6,7 @@
         <div class="header__content row">
 
             <div class="header__logo">
-                <a class="logo" href="/">
+                <a class="logo" href="@localizeURL('')">
                     <img src="/images/logo.png" alt="{{env('APP_NAME', 'Düşünce Kozası')}}">
                 </a>
             </div> <!-- end header__logo -->
@@ -26,14 +26,13 @@
                 </li>
             </ul> <!-- end header__social -->
 
-            <a class="header__search-trigger" href="">Search <i class="fa fa-search"></i></a>
+            <a class="header__search-trigger" href="">@lang('app/navbar.search') <i class="fa fa-search"></i></a>
 
             <div class="header__search">
 
                 <form role="search" method="get" class="header__search-form" action="/results">
                     <label>
-                        <span class="hide-content">Search for</span>
-                        <input type="search" class="search-field" placeholder="Type Keywords" value="" name="q"
+                        <input type="search" class="search-field" placeholder="@lang('app/navbar.typeKeywords')" value="" name="q"
                                title="Search for" autocomplete="off">
                     </label>
                     <input type="submit" class="search-submit" value="Search">

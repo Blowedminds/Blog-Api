@@ -40,7 +40,10 @@
 
             <div class="s-content__author">
 
-                <img src="/images/author/{{$article['author']['userData']['profile_image']}}" alt="">
+                <div class="image is-64x64 has-background-centered has-background-cover"
+                    style="background-image: url('/images/author/{{$article['author']['userData']['profile_image']}}'); border-radius: 99em">
+
+                </div>
 
                 <div class="s-content__author-about">
                     <h4 class="s-content__author-name">

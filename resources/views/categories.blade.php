@@ -26,9 +26,9 @@
                     </div> <!-- end s-content__main -->
 
                 </article>
-
-                @include('categories.list')
-
+                <section class="section s-extra">
+                    @include('categories.list')
+                </section>
             </section> <!-- s-content -->
 
             @include('layouts.footer')

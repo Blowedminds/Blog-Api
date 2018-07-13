@@ -173,16 +173,6 @@
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 
-  &::after {
-    content: "Press Enter to begin your search.";
-    display: block;
-    letter-spacing: 0.6px;
-    font-size: 1.6rem;
-    margin-top: 3rem;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
   input[type="search"] {
     background-color: transparent;
     color: #000000;
@@ -325,7 +315,7 @@ body.search-is-visible {
 
   .header__search-trigger {
     top: 9px;
-    right: 28px;
+    right: -15px;
 
     &::before {
       display: none;

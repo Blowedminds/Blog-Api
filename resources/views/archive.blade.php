@@ -3,7 +3,9 @@
 
 @section('styles')
     <style>
-
+        article.media {
+            padding: 2em;
+        }
     </style>
 @endsection
 
@@ -27,7 +29,7 @@
 
                 </article>
 
-                <section class="s-extra">
+                <section class="section s-extra">
                     @include('archive.articles')
                 </section>
 
