@@ -18,9 +18,9 @@ trait MenuTrait
                     $q->where('role_id', 3);
                 })->orderBy('weight', 'ASC')->get()->map( function ($menu) use ($language_slug)  {
 
-                    $name = $this->fillEmptyLocalizedMenu(json_decode($menu->name, true) ?? [])[$language_slug];
+                    $name = $this->fillEmptyLocalizedMenu($menu->name)[$language_slug];
 
-                    $tooltip = $this->fillEmptyLocalizedMenu(json_decode($menu->tooltip, true) ?? [])[$language_slug];
+                    $tooltip = $this->fillEmptyLocalizedMenu($menu->tooltip)[$language_slug];
 
                     return (object) [
                         'name' => $name,

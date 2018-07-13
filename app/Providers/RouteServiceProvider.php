@@ -40,8 +40,6 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        $this->mapReaderRoutes();
-
         $this->mapImageRoutes();
 
         $this->mapDiscussRoutes();
@@ -53,6 +51,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapArticleRoutes();
 
         $this->mapUserRoutes();
+
+        $this->mapReaderRoutes();
     }
 
     /**
@@ -82,14 +82,6 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
-    }
-
-    protected function mapReaderRoutes()
-    {
-        Route::prefix('reader')
-            ->middleware('api')
-            ->namespace($this->namespace . "\Reader")
-            ->group(base_path('routes/reader.php'));
     }
 
     protected function mapImageRoutes()
@@ -138,5 +130,13 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->moduleNamespace . "\User\Http\Controllers")
             ->group(base_path('app/Modules/User/Http/user.php'));
+    }
+
+    protected function mapReaderRoutes()
+    {
+        Route::prefix('reader')
+            ->middleware('api')
+            ->namespace($this->moduleNamespace . '\Reader\Article\Http\Controllers')
+            ->group(base_path('app/Modules/Reader/Article/Http/reader.php'));
     }
 }

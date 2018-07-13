@@ -2,9 +2,8 @@
 
 namespace App\Events;
 
-use App\RoomMessage;
+use App\Modules\Core\RoomMessage;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
