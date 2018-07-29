@@ -35,5 +35,5 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
     Route::get('/categories', 'CategoriesController@index');
     Route::get('/category/{category_slug}', 'ArchiveController@category');
 
-    Route::get('results', 'SearchController@getResults');
+    Route::get('/results', 'SearchController@getResults');
 });

@@ -26,6 +26,9 @@ class ArticleController extends Controller
                 $q->with('userData');
             }])
             ->firstOrFail();
+
+        $article->increment('views');
+
         return view('article')->with(['article' => $article, 'menus' => $this->getMenus()]);
     }
 }

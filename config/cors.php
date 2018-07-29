@@ -13,11 +13,7 @@ return [
     */
    
     'supportsCredentials' => false,
-    'allowedOrigins' => [
-        env('APP_PUBLIC_URL', 'http://dkblog.com'),
-        env('APP_ADMIN_URL', 'http://mng.dkblog.com'),
-        env('APP_DISCUSS_URL', 'http://forum.dkblog.com')
-    ],
+    'allowedOrigins' => explode(', ', env('APP_URLS', [])),
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['Content-Type', 'x-xsrf-token', 'X-Requested-With', 'enctype', 'x-socket-id'],
     'allowedMethods' => ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
