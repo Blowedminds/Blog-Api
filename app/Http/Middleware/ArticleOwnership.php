@@ -16,9 +16,7 @@ class ArticleOwnership
      */
     public function handle($request, Closure $next)
     {
-        $user = auth()->user();
-
-        if($user->permission('article-ownership')->count() < 1) {
+        if(auth()->user()->permission('ownership.article')->count() < 1) {
             throw new RestrictedAreaException();
         }
 
