@@ -4,12 +4,6 @@
 [submodule "app/Modules/Core"]
 	path = app/Modules/Core
 	url = https://github.com/Blowedminds/Laravel-Module-Core
-[submodule "app/Modules/Editor/Article"]
-	path = app/Modules/Editor/Article
-	url = https://github.com/Blowedminds/Laravel-Module-EditorArticle
-[submodule "app/Modules/Editor/Admin"]
-	path = app/Modules/Editor/Admin
-	url = https://github.com/Blowedminds/Laravel-Module-Admin
 [submodule "app/Modules/Discuss"]
 	path = app/Modules/Discuss
 	url = https://github.com/Blowedminds/Laravel-Module-Discuss
@@ -19,6 +13,3 @@
 [submodule "app/Modules/User"]
 	path = app/Modules/User
 	url = https://github.com/Blowedminds/Laravel-Module-User
-[submodule "app/Modules/Reader/Article"]
-	path = app/Modules/Reader/Article
-	url = https://github.com/Blowedminds/Laravel-Module-ReaderArticle
