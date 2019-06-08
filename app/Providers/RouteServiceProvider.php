@@ -112,16 +112,16 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('admin')
             ->middleware('api')
-            ->namespace($this->moduleNamespace . "\Editor\Admin\Http\Controllers")
-            ->group(base_path('app/Modules/Editor/Admin/Http/admin.php'));
+            ->namespace($this->moduleNamespace . "\Admin\Http\Controllers")
+            ->group(base_path('app/Modules/Admin/Http/admin.php'));
     }
 
     protected function mapArticleRoutes()
     {
         Route::prefix('article')
             ->middleware('api')
-            ->namespace($this->moduleNamespace . '\Editor\Article\Http\Controllers')
-            ->group(base_path('app/Modules/Editor/Article/Http/article.php'));
+            ->namespace($this->moduleNamespace . '\Article\Http\Controllers')
+            ->group(base_path('app/Modules/Article/Http/article.php'));
     }
 
     protected function mapUserRoutes()
@@ -136,7 +136,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('reader')
             ->middleware('api')
-            ->namespace($this->moduleNamespace . '\Reader\Article\Http\Controllers')
-            ->group(base_path('app/Modules/Reader/Article/Http/reader.php'));
+            ->namespace($this->moduleNamespace . '\ReaderArticle\Http\Controllers')
+            ->group(base_path('app/Modules/ReaderArticle/Http/reader.php'));
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Modules\Core\Article;
-use App\Modules\Editor\Article\Observers\ArticleObserver;
+use App\Modules\Article\Observers\ArticleObserver;
 use App\Modules\User\Observers\UserObserver;
 use App\Modules\Core\User;
 use Illuminate\Support\Facades\Blade;

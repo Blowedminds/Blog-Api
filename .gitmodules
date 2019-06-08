@@ -13,3 +13,12 @@
 [submodule "app/Modules/User"]
 	path = app/Modules/User
 	url = https://github.com/Blowedminds/Laravel-Module-User
+[submodule "app/Modules/Article"]
+	path = app/Modules/Article
+	url = https://github.com/bwqr/Laravel-Module-EditorArticle
+[submodule "app/Modules/Admin"]
+	path = app/Modules/Admin
+	url = https://github.com/bwqr/Laravel-Module-Admin
+[submodule "app/Modules/ReaderArticle"]
+	path = app/Modules/ReaderArticle
+	url = https://github.com/bwqr/Laravel-Module-ReaderArticle
